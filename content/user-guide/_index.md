@@ -9,6 +9,10 @@ sidebar_expanded: true
 
 # User guide
 
+> [!WARNING] This is the staging version of the site.
+> Please visit [www.union.ai/docs](https://www.union.ai/docs) for the official
+> version.
+
 {{< variant flyte >}}
 {{< markdown >}}
 
