@@ -1,9 +1,6 @@
 [params]
 # List of available versions. Format: v<major>.<minor>
 versions = [
-  "v1.15.3",
-  "v1.15",
-  "v1.14",
 ]
 
 # Set legacy version number
