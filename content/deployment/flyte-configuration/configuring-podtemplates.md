@@ -9,30 +9,34 @@ mermaid: true
 
 
 The [PodTemplate](https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates)
-is a K8s native resource used to define a K8s Pod. It contains all the fields in the PodSpiec, in addition to ObjectMeta to control resource-specific metadata
-such as Labels or Annotations. PodTemplates are commonly applied in Deployments,
-ReplicaSets, etc to define the managed Pod configuration of the resources.
+is a K8s-native resource used to define a K8s Pod. It contains all the fields in the PodSpec, in addition to ObjectMeta to control resource-specific metadata such as Labels or Annotations. PodTemplates are commonly applied in resources like Deployments or ReplicaSets to define the managed Pod configuration.
 
-Within Flyte, you can use PodTemplates to configure Pods created as part
-of Flyte's task execution. This ensures complete control over Pod configuration,
-supporting all options available through the resource and ensuring maintainability
-in future versions.
+Within Flyte, you can use them to configure Pods created as part
+of Flyte's task execution. This ensures complete control over Pod configuration, supporting all options available through the resource and ensuring maintainability in future versions.
 
-Starting with the Flyte 1.4 release, there are two ways of defining [PodTemplate](https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates):
+There are three ways of defining [PodTemplate](https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates) in Flyte:
 1. Compile-time PodTemplate defined at the task level
 2. Runtime PodTemplates
+3. Cluster-wide default PodTemplate
 
-> The legacy technique is to set configuration options in Flyte's K8s plugin configuration. These two approaches can be used simultaneously, where the K8s plugin configuration will override the default PodTemplate values.
+> These approaches can be used simultaneously, where the cluste-wide configuration will override the default PodTemplate values.
 
+## A note about containers kinds
+
+In a Kubernetes Pod, you can have multiple containers but typically there is one considered "primary", or the one that runs the microservice or app. 
+You can also have [initContainers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#understanding-init-containers) which are designed to run before the primary to perfomr anciliarry tasks like downloading data.
 ## Compile-time PodTemplates
 
+Using the [Kubernetes Python client](https://github.com/kubernetes-client/python), we can define a compile-time PodTemplate as part of the configuration of a [Task](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit-task).
 
-We can define a compile-time pod template, as part of the definition of a [Task](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit-task), for example:
+Example:
 
 ```python
 
-    @task(
-        pod_template=PodTemplate(
+from flytekit import task, workflow, PodTemplate
+from kubernetes.client import V1PodSpec, V1Container, V1ResourceRequirements, V1EnvVar, V1Volume, V1Toleration
+
+pod_template=PodTemplate(
             primary_container_name="primary",
             labels={"lKeyA": "lValA", "lKeyB": "lValB"},
             annotations={"aKeyA": "aValA", "aKeyB": "aValB"},
@@ -43,7 +47,7 @@ We can define a compile-time pod template, as part of the definition of a [Task]
                         image="repo/placeholderImage:0.0.0",
                         command="echo",
                         args=["wow"],
-                        resources=V1ResourceRequirements(limits={"cpu": "999", "gpu": "999"}),
+                        resources=V1ResourceRequirements(limits={"cpu": "24", "gpu": "10"}),
                         env=[V1EnvVar(name="eKeyC", value="eValC"), V1EnvVar(name="eKeyD", value="eValD")],
                     ),
                 ],
@@ -52,18 +56,64 @@ We can define a compile-time pod template, as part of the definition of a [Task]
                     V1Toleration(
                         key="num-gpus",
                         operator="Equal",
-                        value=1,
+                        value="1",
                         effect="NoSchedule",
                     ),
                 ],
             )
         )
-    )
-    def t1() -> int:
-        ...
+
+@task(pod_template=pod_template)
+def my_flyte_task(input_str: str) -> str:
+    print(f"Running task with input: {input_str}")
+    return f"Processed {input_str}"
+
+# Define a workflow to use the task
+@workflow
+def my_workflow(input_str: str) -> str:
+    return my_flyte_task(input_str="Hello")
 ```
-Notice how in this example we are defining a new PodTemplate inline, which allows us to define a full [V1PodSpec](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1PodSpec.md) and also define
-the name of the primary container, labels, and annotations.
+Which is rendered as a Pod which includes the following configuration:
+
+```yaml
+...
+Labels:           ...
+                  lKeyA=lValA
+                  lKeyB=lValB
+                  ...
+Annotations:      aKeyA: aValA
+                  aKeyB: aValB
+                  primary_container_name: primary
+...
+Containers:
+  primary:
+    Image:      repo/placeholderImage:0.0.0
+    Port:       <none>
+    Host Port:  <none>
+    ...
+    Limits:
+      cpu:             24
+      memory:          1Gi
+      nvidia.com/gpu:  10
+    Requests:
+      cpu:             24
+      memory:          1Gi
+      nvidia.com/gpu:  10
+    Environment:
+      eKeyC:                              eValC
+      eKeyD:                              eValD
+      ... 
+Volumes:
+  volume:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+ ...
+Tolerations:                 ...
+                             num-gpus=1:NoSchedule
+```
+
+Notice how in this example we are defining a new PodTemplate inline, which allows us to define a full [V1PodSpec](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1PodSpec.md) and also define the name of the primary container, labels, and annotations.
 
 The term "compile-time" here refers to the fact that the pod template definition is part of the [TaskSpec](https://docs.flyte.org/en/latest/api/flyteidl/docs/admin/admin.html#ref-flyteidl-admin-taskclosure).
 
