@@ -6,23 +6,44 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # ImageSpec
 
-During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on {{< key product_name >}},
-so you will need to ensure that the required dependencies are installed in both environments.
+When deploying a task, {{< key product_name >}} needs to know how to build the container image that will be used to run that task.
+You specify this information in an `ImageSpec` object that is passed to the `@{{< key kit_as >}}.task` decorator.
 
-Here we will explain how to set up the dependencies for your workflow to run remotely on {{< key product_name >}}.
-For information on how to make your dependencies available locally, see [Local dependencies](./local-dependencies).
+Here is a simple example:
 
-When a workflow is deployed to {{< key product_name >}}, each task is set up to run in its own container in the Kubernetes cluster.
-You specify the dependencies as part of the definition of the container image to be used for each task using the `ImageSpec` class.
-For example::
+{{< variant flyte >}}
+{{< markdown >}}
 
 ```python
 import {{< key kit_import >}}
 
 image_spec = union.ImageSpec(
-{{< variant byoc selfmanaged >}}
-    builder="union",
+    builder="default",
+    name="say-hello-image",
+    requirements="uv.lock",
+    registry=registry=os.environ.get("IMAGE_REGISTRY", None),
+)
+
+@{{< key kit_as >}}.task(container_image=image_spec)
+def say_hello(name: str) -> str:
+    return f"Hello, {name}!"
+
+@{{< key kit_as >}}.workflow
+def hello_world_wf(name: str = "world") -> str:
+    greeting = say_hello(name=name)
+    return greeting
+```
+
+{{< /markdown >}}
 {{< /variant >}}
+{{< variant serverless byoc selfmanaged >}}
+{{< markdown >}}
+
+```python
+import {{< key kit_import >}}
+
+image_spec = union.ImageSpec(
+    builder="union",
     name="say-hello-image",
     requirements="uv.lock",
 )
@@ -37,12 +58,38 @@ def hello_world_wf(name: str = "world") -> str:
     return greeting
 ```
 
-Here, the `ImageSpec` class is used to specify the container image to be used for the `say_hello` task.
+{{< /markdown >}}
+{{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
-* The `builder` parameter specifies how the image should be built. The value `union` means that the image will be built using {{< key product_name >}}'s built-in cloud builder.
-  In some cases you may want to build the image locally on your machine and push it to a container registry. In that case, you would remove the `builder` parameter
-  (or set it to `envd`) and add a `registry` parameter with the URL of the registry to push the image to. See below for more details.
+Here, the `ImageSpec` class is used to specify the container image to be used for the `say_hello` task:
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+* The `builder` parameter specifies how the image should be built.
+  * In this case we specify `default`. This will build the image using `docker` on your local machine.
+    See [Local image builder](#local-image-builder) below for more details.
+
+> [!NOTE]
+> Omitting the `builder` parameter is equivalent to specifying `builder="default"`.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc selfmanaged >}}
+{{< markdown >}}
+
+* The `builder` parameter specifies how the image should be built.
+  * In this case we specify `union`, meaning that the image will be built in the cloud using {{< key product_name >}}'s built-in cloud image builder.
+    See [Cloud image builder](#cloud-image-builder) below for more details.
+  * Alternatively, you can specify `default`. This will build the image using `docker` on your local machine.
+    See [Local image builder](#local-image-builder) below for more details.
+
+> [!NOTE]
+> In {{< key product_name >}} Serverless, omitting the `builder` parameter is equivalent to specifying `builder="union"`.
+> In {{< key product_name >}} BYOC and Self-managed, omitting the `builder` parameter is equivalent to specifying `builder="default"`
+> (this differentiation exists for purposes of backward compatibility).
+
+{{< /markdown >}}
 {{< /variant >}}
 
 * The `name` parameter specifies the name of the image. This name will be used to identify the image in the container registry.
@@ -57,9 +104,10 @@ Here, the `ImageSpec` class is used to specify the container image to be used fo
 When you execute the `{{< key cli >}} run` or `{{< key cli >}} register` command, {{< key product_name >}} will build the container image defined in `ImageSpec` block
 (as well as registering the tasks and workflows defined in your code).
 
-{{< variant serverless >}}
+{{< variant serverless byoc selfmanaged >}}
+{{< markdown >}}
 
-## {{< key product_name >}} cloud image builder {#cloud-image-builder}
+## Cloud image builder
 
 {{< key product_name >}} Serverless will build the image using its `ImageBuilder` service in the cloud
 and registered the image in {{< key product_name >}}'s own container registry.
@@ -71,22 +119,18 @@ All this is done transparently and does not require any set up by the user.
 > In {{< key product_name >}} BYOC, you can optionally build images from the `ImageSpec` on your local machine by specifying `builder="envd"` in the `ImageSpec`.
 > See [Local image builder](#local-image-builder) in the BYOC documentation for more details.
 
-{{< /variant >}}
-{{< variant byoc selfmanaged >}}
-
 ## {{< key product_name >}} cloud image builder
 
 If you have specified `builder="union"` in the `ImageSpec`, {{< key product_name >}} will build the image using its `ImageBuilder` service in the cloud
 and registered the image in {{< key product_name >}}'s own container registry. From there it will be pulled and installed in the task container when it spins up.
 All this is done transparently and does not require any set up by the user.
 
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Local image builder
 
-> [!NOTE] Local image build in BYOC
-> In {{< key product_name >}} BYOC, you can build images from ImageSpec either using the {{< key product_name >}} cloud image builder (by specifying `builder="union"`) or on your local machine
-> (by omitting the `builder` parameter or specifying `builder="envd"`).
-> In {{< key product_name >}} Serverless, images defined by `ImageSpec` are always built using the {{< key product_name >}} cloud image builder.
-> Local image building is not supported in Serverless.
+<!-- TODO: DONE TO HERE -->
 
 If you have not specified a `builder` or have specified `builder="envd"`, {{< key product_name >}} will build the image locally on your machine and push it to the registry you specify.
 This also requires that you specify a `registry` parameter in the `ImageSpec`.
@@ -138,4 +182,3 @@ In addition to making sure your registry is accessible from your local machine, 
 In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#about-inheritance-of-access-permissions-and-visibility).
 
 At this point, you can run the workflow from the {{< key product_name >}} interface.
-{{< /variant >}}
