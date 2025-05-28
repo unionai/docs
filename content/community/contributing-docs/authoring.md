@@ -239,15 +239,6 @@ run_on_union_registry:
 > [!NOTE]
 > Settings that control this behavior are in `data/run_on_union.yaml`.
 
-
-
-
-
-
-
-
-
-
 ## Jupyter Notebooks
 
 You can also generate pages from Jupyter notebooks.
