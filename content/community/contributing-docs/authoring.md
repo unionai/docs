@@ -121,11 +121,53 @@ At the top of your `.md` file, add:
 ```markdown
 ---
 layout: py_example
-example_file: /path/to/your/file.py
-run_command: union run --remote tutorials//path/to/your/file.py main
-source_location: https://www.github.com/unionai/unionai-examples/tree/main/tutorials/path/to/your/file.py
+example_file: /path/to/file/example.py
+example_run_cmd: union run app.py
 ---
 ```
+
+You may want more control over the content.
+Here's the full list of settings:
+
+```markdown
+---
+layout: py_example
+example_file: /path/to/file/example.py
+example_origin: https://github.com/unionai/unionai-examples/path/to/file/in/repo/example.py
+example_run_pre:
+    - git clone @@remote@@
+    - cd @@remote:base@@/@@folder@@
+example_run_cmd: union run app.py
+example_packages:
+    - pandas
+    - pydantic
+    - fastapi
+example_setup:
+    - cd a/b/c/d
+    - pip install -r requirements.txt
+example_env:
+    USER_NAME: "admin"
+    PASSWORD: "your-password"
+---
+```
+
+> [!NOTE]
+> Variables: `@@remote@@` `@@remote:base@@` `@@folder@@` are replaced with the values
+> derived from the `example_file` field, and can be used in `example_run_pre`.
+
+| Setting            | Type            | Description                                                            |
+| ------------------ | --------------- | ---------------------------------------------------------------------- |
+| `example_file`     | string          | (required) Path to the python file that is the source of the content.  |
+| `example_run_cmd`  | string          | (required) Command to run the example.                                 |
+| `example_origin`   | string          | URL to the source of the content.                                      |
+| `example_run_pre`  | list of strings | List of commands to run before the example is run.                     |
+| `example_packages` | list of strings | List of packages to install before running the example.                |
+| `example_setup`    | list of strings | List of commands to run before running the example.                    |
+| `example_env`      | dict            | Dictionary of environment variables to set before running the example. |
+
+> [!NOTE]
+> If your tutorial is in one of the default repositories known by the doc system, do not
+> specify this setting. It will be generated automatically based on the `example_file`.
 
 Where the referenced file looks like this:
 
@@ -136,7 +178,9 @@ Where the referenced file looks like this:
 # data and XGBoost, an optimized gradient boosting library, for credit default prediction.
 # We'll learn how to declare NVIDIA  `A100` for our training function and `ImageSpec`
 # for specifying our python dependencies.
+#
 # {{run-on-union}}
+#
 # ## Declaring workflow dependencies
 #
 # First, we start by importing all the dependencies that is required by this workflow:
@@ -157,18 +201,52 @@ The generator will convert the markdown into normal page text content and the co
 ### Run on Union Instructions
 
 We can add the run on Union instructions anywhere in the content.
-Annotate the location you want to include it with `{{run-on-union}}`. Like this:
+Annotate the location you want to include it with `{{run-on-union}}`.
+Like this:
 
 ```markdown
 # The quick brown fox wants to see the Union instructions.
 #
 # {{run-on-union}}
 #
-# And it shall have it.
+# And there they are!
 ```
 
-The resulting **Run on Union** section in the rendered docs will include the run command and source location,
-specified as `run_command` and `source_locaiton` in the front matter of the corrsponding `.md` page.
+The resulting **Run on Union** section in the rendered docs will include the run command and source location.
+
+You can control the run on union instructions by adding the following fields to the front matter:
+
+```markdown
+---
+run_on_union_secrets:
+    - openai_api_key
+    - unionai_api_key
+run_on_union_enforce: true
+run_on_union_open: true
+run_on_union_registry:
+    - '# replace with your registry name'
+    - export IMAGE_SPEC_REGISTRY="your-container-registry"
+---
+```
+
+| Setting                 | Type | Description                                                                       |
+| ----------------------- | ---- | --------------------------------------------------------------------------------- |
+| `run_on_union_enforce`  | bool | If `true` the run on union marker will be required somewhere in the example file. |
+| `run_on_union_secrets`  | list | List of secrets to include in the run on union instructions.                      |
+| `run_on_union_registry` | list | List of commands to include in the run on union instructions.                     |
+| `run_on_union_open`     | bool | If `true` the run on union instructions will be open by default.                  |
+
+> [!NOTE]
+> Settings that control this behavior are in `data/run_on_union.yaml`.
+
+
+
+
+
+
+
+
+
 
 ## Jupyter Notebooks
 

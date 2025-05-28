@@ -1,0 +1,61 @@
+{{ $content := readFile . }}
+{{ if not $content }}
+    {{ warnf "Could not find example file %s" . }}
+{{ end }}
+{{ $lines := split $content "\n" }}
+{{ $inCodeBlock := false }}
+{{ $buffer := slice }}
+{{ $result := "" }}
+{{ $sawEmptyLine := false }}
+
+{{ range $lines }}
+    {{ $line := . }}
+    {{ if and (eq (len $line) 0) (not $inCodeBlock) }}
+    <!-- Skip empty lines -->
+    {{ $sawEmptyLine = true}}
+    {{ continue }}
+    {{ end }}
+    {{ if eq (strings.Replace $line " " "") "#{{run-on-union}}"}}
+    {{ $result = printf "%s%s\n" $result "{{run-on-union}}" }}
+    {{ continue }}
+    {{ end }}
+    {{ if hasPrefix $line "# " }}
+    {{ if $sawEmptyLine }}
+        {{ $result = printf "%s\n" $result }}
+        {{ $sawEmptyLine = false }}
+    {{ end }}
+    <!-- Handle markdown comment lines -->
+    {{ if $inCodeBlock }}
+        <!-- Close code block if we were in one -->
+        {{ $inCodeBlock = false }}
+        {{ $result = printf "%s\n```\n\n" $result }}
+    {{ end }}
+    {{ $result = printf "%s%s\n" $result (strings.TrimPrefix "# " $line) }}
+    {{ else if hasPrefix $line "#" }}
+    <!-- Handle empty comment lines -->
+    {{ if $inCodeBlock }}
+        <!-- Close code block if we were in one -->
+        {{ $inCodeBlock = false }}
+        {{ $result = printf "%s\n```\n\n" $result }}
+    {{ end }}
+    <!-- Only add a newline if it's not just a blank comment -->
+    {{ if ne $line "#" }}
+        {{ $result = printf "%s\n" $result }}
+    {{ end }}
+    {{ else }}
+    <!-- Handle code lines -->
+    {{ if not $inCodeBlock }}
+        <!-- Start a new code block -->
+        {{ $inCodeBlock = true }}
+        {{ $result = printf "%s\n```python\n" $result }}
+    {{ end }}
+    {{ $result = printf "%s%s\n" $result $line }}
+    {{ end }}
+{{ end }}
+
+<!-- Close final code block if needed -->
+{{ if $inCodeBlock }}
+    {{ $result = printf "%s\n```\n" $result }}
+{{ end }}
+
+{{ return $result }}

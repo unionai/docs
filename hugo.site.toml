@@ -30,6 +30,7 @@ custom_css = [
   "markdown.css",
   "mermaid.css",
   "plugin.css",
+  "py_example.css",
   "search.css",
   "sidebar.css",
   "tabs.css",

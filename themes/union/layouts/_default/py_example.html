@@ -1,84 +1,38 @@
 {{ define "main" }}
-  {{- $enforceRunOnUnion := .Params.enforce_run_on_union | default true -}}
-  
-  {{- if not (strings.HasSuffix .Params.example_file ".py") -}}
-    {{ warnf "Example file %s does not have a .py extension" .Params.example_file }}
-    <div style="border: 2px dashed orange; color: orange; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-      Warning: The example file <code>{{ .Params.example_file }}</code> does not have a Python (.py) extension.
+  {{ $config := partial "py_example/config.gotmpl" . }}
+  {{ range $config.errors }}
+    <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+      {{ . | safeHTML }}
     </div>
-  {{- end -}}
+  {{ end }}
+
+  <!-- <pre>{{ $config | jsonify (dict "indent" "  ") }}</pre> -->
 
   {{- partial "resource-map.html" (dict "page" . "bom" .Params.resources) -}}
 
-  <div class="markdown-content">
-    {{ $content := readFile .Params.example_file }}
-    {{ if not $content }}
-    {{ warnf "Could not find example file %s" .Params.example_file }}
-    {{ end }}
-    {{ $lines := split $content "\n" }}
-    {{ $inCodeBlock := false }}
-    {{ $buffer := slice }}
-    {{ $result := "" }}
-    {{ $sawEmptyLine := false }}
-
-    {{ range $lines }}
-      {{ $line := . }}
-      {{ if and (eq (len $line) 0) (not $inCodeBlock) }}
-        <!-- Skip empty lines -->
-        {{ $sawEmptyLine = true}}
-        {{ continue }}
-      {{ end }}
-      {{ if eq (strings.Replace $line " " "") "#{{run-on-union}}"}}
-        {{ $result = printf "%s%s\n" $result "{{run-on-union}}" }}
-        {{ continue }}
-      {{ end }}
-      {{ if hasPrefix $line "# " }}
-        {{ if $sawEmptyLine }}
-          {{ $result = printf "%s\n" $result }}
-          {{ $sawEmptyLine = false }}
-        {{ end }}
-        <!-- Handle markdown comment lines -->
-        {{ if $inCodeBlock }}
-          <!-- Close code block if we were in one -->
-          {{ $inCodeBlock = false }}
-          {{ $result = printf "%s\n```\n\n" $result }}
-        {{ end }}
-        {{ $result = printf "%s%s\n" $result (strings.TrimPrefix "# " $line) }}
-      {{ else if hasPrefix $line "#" }}
-        <!-- Handle empty comment lines -->
-        {{ if $inCodeBlock }}
-          <!-- Close code block if we were in one -->
-          {{ $inCodeBlock = false }}
-          {{ $result = printf "%s\n```\n\n" $result }}
-        {{ end }}
-        <!-- Only add a newline if it's not just a blank comment -->
-        {{ if ne $line "#" }}
-          {{ $result = printf "%s\n" $result }}
-        {{ end }}
-      {{ else }}
-        <!-- Handle code lines -->
-        {{ if not $inCodeBlock }}
-          <!-- Start a new code block -->
-          {{ $inCodeBlock = true }}
-          {{ $result = printf "%s\n```python\n" $result }}
-        {{ end }}
-        {{ $result = printf "%s%s\n" $result $line }}
-      {{ end }}
-    {{ end }}
-
-    <!-- Close final code block if needed -->
-    {{ if $inCodeBlock }}
-      {{ $result = printf "%s\n```\n" $result }}
-    {{ end }}
+  <div class="pyexample-content">
+    <!-- Parse the example file -->
+    {{ $result := partial "py_example/parser.gotmpl" .Params.example_file }}
 
     <!-- Render the final markdown -->
     {{ $markdown := page.RenderString $result }}
     {{ if strings.Contains $markdown "{{run-on-union}}" }}
+      {{- $emoji := transform.Emojify ":arrow_forward:" -}}
+      {{ $openTag := "" }}
+      {{ if $config.open }}
+        {{ $openTag = "open" }}
+      {{ end }}
       {{ $parts := split $markdown "{{run-on-union}}" }}
       {{ index $parts 0 | safeHTML }}
-      {{ partial "run-on-union.html" . }}
+      <div style="margin-bottom: 1rem;">
+        <sl-details summary="{{ $emoji }} Run in Union" {{ $openTag }}>
+          {{ page.RenderString (partial "run-on-union.md" $config) }}
+        </sl-details>
+      </div>
+      {{ block "source_panel" $config.origin }}{{ end }}
       {{ index $parts 1 | safeHTML }}
-    {{ else if not $enforceRunOnUnion }}
+    {{ else if not $config.enforce }}
+      {{ block "source_panel" $config.origin }}{{ end }}
       {{ $markdown }}
     {{ else }}
       {{ warnf "[Run on Union] This example is missing the {{run-on-union}} marker. Please add it to the example file. %s" .Path }}
@@ -90,4 +44,11 @@
   </div>
 
   {{ partial "footer-nav.html" . }}
+{{ end }}
+
+{{ define "source_panel" }}
+  <div class="origin">
+    Source code for this tutorial can be found
+    <a href='{{ . }}'>here</a>
+  </div>
 {{ end }}

@@ -1,0 +1,85 @@
+{{- $variant := .Site.Params.variant -}}
+{{- $errors := slice -}}
+{{- if not .Params.example_file -}}
+    {{ warnf "[Run on Union] This example is missing the example front matter. %s" .Path }}
+    {{ $errors = $errors | append "This example is missing the example front matter." }}
+{{- end -}}
+
+{{- $origin := "" -}}
+{{- $sourceBase := "" }}
+
+{{- if .Params.example_origin -}}
+    {{- $origin = .Params.example_origin -}}
+{{- else -}}
+    {{- $repoFilePath := "" }}
+    {{- range $local, $remote := .Site.Data.run_on_union.source_map }}
+        {{- if hasPrefix $.Params.example_file $local -}}
+            {{- $sourceBase = $remote -}}
+            {{- $repoFilePath = strings.TrimPrefix $local $.Params.example.file -}}
+            {{- break -}}
+        {{- end -}}
+    {{- end -}}
+    {{ if not $sourceBase -}}
+        {{ warnf "[Run on Union] This example is missing the source front matter and it does not have a source mapping in 'data/run_on_union.yaml'. %s" .Path }}
+        {{ $errors = $errors | append "This example is missing the source front matter and it does not have a source mapping in <code>data/run_on_union.yaml</code>." }}
+    {{- end -}}
+
+    {{- $origin = urls.JoinPath $sourceBase "tree" "main" $repoFilePath -}}
+{{- end -}}
+
+{{- $run_pre := .Params.example_run_pre -}}
+{{- if not $run_pre -}}
+    {{- if not $sourceBase -}}
+        {{- warnf "[Run on Union] When specifying origin, you must provide example_run_pre steps. %s" .Path -}}
+        {{ $errors = $errors | append "When specifying origin, you must provide <code>example_run_pre</code> steps." }}
+    {{- end -}}
+
+    {{- $run_pre = index .Site.Data.run_on_union.defaults.run_pre $variant -}}
+    {{- if not $run_pre -}}
+        {{ warnf "[Run on Union] There's no default run_pre in data/run_on_union.yaml for this variant." }}
+        {{ $errors = $errors | append "There's no default run_pre in <code>data/run_on_union.yaml</code> for this variant." }}
+    {{- end -}}
+{{- end -}}
+{{- /* Process run commands to replace variables */ -}}
+{{- $processedRun := slice -}}
+{{- range $cmd := $run_pre -}}
+    {{- $processedCmd := $cmd -}}
+    {{- $processedCmd = replace $processedCmd "@@remote@@" $sourceBase -}}
+    {{- $processedCmd = replace $processedCmd "@@remote:base@@" (path.Base $sourceBase) -}}
+    {{- $processedCmd = replace $processedCmd "@@folder@@" (strings.TrimPrefix "/" $.Path) -}}
+    {{- $processedRun = $processedRun | append $processedCmd -}}
+{{- end -}}
+{{- $run_pre = $processedRun -}}
+
+{{- $registry := .Params.run_on_union_registry -}}
+{{- if not $registry -}}
+    {{- $registry = index .Site.Data.run_on_union.defaults.registry $variant -}}
+    {{- if not $registry -}}
+        {{ warnf "[Run on Union] There's no default registry in data/run_on_union.yaml for this variant." }}
+        {{ $errors = $errors | append "There's no default registry in <code>data/run_on_union.yaml</code> for this variant." }}
+    {{- end -}}
+{{- end -}}
+
+{{- $run_cmd :=.Params.example_run_cmd -}}
+{{- if not $run_cmd -}}
+    {{ warnf "[Run on Union] 'example_run_cmd' not specified." }}
+    {{ $errors = $errors | append "<code>example_run_cmd</code> not specified." }}
+{{- end -}}
+
+{{- $result := (dict
+    "open" (.Params.run_on_union_open | default false)
+    "enforce" (.Params.run_on_union_enforce | default true)
+    "origin" $origin
+    "remote" $sourceBase
+    "remote:base" (path.Base $sourceBase)
+    "registry" $registry
+    "secrets" .Params.run_on_union_secrets
+    "packages" .Params.example_packages
+    "setup" .Params.example_setup
+    "env" .Params.example_env
+    "run_cmd" $run_cmd
+    "run_pre" $run_pre
+    "errors" $errors
+) -}}
+
+{{- return $result -}}

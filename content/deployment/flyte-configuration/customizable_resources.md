@@ -23,11 +23,11 @@ You can choose to customize these settings along increasing levels of specificit
 - Domain
 - Project and Domain
 - Project, Domain, and Workflow name
-- Project, Domain, Workflow name and LaunchPlan name
+- Project, Domain, Workflow name and Launch plan name
 
-See :ref:`control-plane` to understand projects and domains.
-The following section will show you how to configure the settings along
-these dimensions.
+See [Project and domains](../../user-guide/development-cycle/projects-and-domains) for general information about those concepts.
+
+The following section will show you how to configure the settings along these dimensions.
 
 ### Task resources
 

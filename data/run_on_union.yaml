@@ -1,0 +1,23 @@
+source_map:
+  '/external/unionai-examples': https://github.com/unionai/unionai-examples
+defaults:
+  registry:
+    flyte: []
+    serverless: []
+    byoc:
+      - '# [optional] replace with your registry name'
+      - '# export IMAGE_SPEC_REGISTRY="<your-container-registry>"'
+    selfmanaged:
+      - '# [optional] replace with your registry name'
+      - '# export IMAGE_SPEC_REGISTRY="<your-container-registry>"'
+  run_pre:
+    flyte: []
+    serverless:
+      - git clone @@remote@@
+      - cd @@remote:base@@/@@folder@@
+    byoc:
+      - git clone @@remote@@
+      - cd @@remote:base@@/@@folder@@
+    selfmanaged:
+      - git clone @@remote@@
+      - cd @@remote:base@@/@@folder@@
