@@ -1,6 +1,6 @@
 ---
 title: Managing API keys
-weight: 13
+weight: 15
 variants: -flyte +serverless +byoc +selfmanaged
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: UnionRemote
-weight: 18
+weight: 21
 variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---

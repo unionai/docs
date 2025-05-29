@@ -1,6 +1,6 @@
 ---
 title: Running your code
-weight: 8
+weight: 10
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

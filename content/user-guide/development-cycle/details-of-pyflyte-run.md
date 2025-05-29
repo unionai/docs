@@ -1,6 +1,6 @@
 ---
 title: Details of pyflyte run
-weight: 10
+weight: 12
 variants: +flyte -serverless -byoc -selfmanaged
 ---
 

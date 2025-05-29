@@ -1,6 +1,6 @@
 ---
 title: Details of union run
-weight: 10
+weight: 12
 variants: -flyte +serverless +byoc +selfmanaged
 ---
 

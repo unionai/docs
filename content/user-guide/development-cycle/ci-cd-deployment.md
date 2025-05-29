@@ -1,6 +1,6 @@
 ---
 title: CI/CD deployment
-weight: 17
+weight: 19
 variants: -flyte -serverless +byoc +selfmanaged
 ---
 

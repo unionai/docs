@@ -1,6 +1,6 @@
 ---
 title: Jupyter notebooks
-weight: 18
+weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

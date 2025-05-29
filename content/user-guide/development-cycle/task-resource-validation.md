@@ -1,6 +1,6 @@
 ---
 title: Task resource validation
-weight: 15
+weight: 17
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Decks
-weight: 19
+weight: 22
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
