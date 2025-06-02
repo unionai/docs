@@ -1,5 +1,5 @@
 OUTPUT_FOLDER=content/api-reference/flytekit-sdk
-API_DATA=/Users/shalomz/flt/flytekit.api.yaml
+API_DATA=flytekit.api.yaml
 
 .PHONY: all
 all: parser generate
