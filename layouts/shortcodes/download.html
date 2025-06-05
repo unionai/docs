@@ -1,4 +1,11 @@
 {{- $url := .Get 0 -}}
+{{- if not (or (hasPrefix $url "/_static/public/") (hasPrefix $url "https://github.com/unionai/"))  -}}
+  {{- warnf "The download shortcode should only be used for files in the /_static/public directory or a Union.ai's GitHub repository. Found: %s" $url -}}
+  <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+    Download shortcode should only be used for files in the /_static/public directory or a Union.ai's GitHub repository.
+    <span style='white-space: nowrap'>{{ $url }}</span>
+  </div>
+{{- end -}}
 {{- $name := path.Base $url -}}
 {{- if .Get 1 -}}
     {{- $name = .Get 1 -}}
