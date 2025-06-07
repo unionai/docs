@@ -11,8 +11,7 @@ These logs are different from the core Flyte platform logs, are specific to exec
 
 Every organization potentially uses different log aggregators, making it hard to create a one-size-fits-all solution. Some examples of the log aggregators include cloud-hosted solutions like AWS CloudWatch, GCP Stackdriver, Splunk, Datadog, etc.
 
-Flyte provides a simplified interface to configure your log provider. Flyte-sandbox
-ships with the Kubernetes dashboard to visualize the logs. This may not be safe for production, hence we recommend users explore other log aggregators.
+Flyte provides a simplified interface to configure your log provider, generating a link in the UI for each node execution live logs.
 
 ## How to configure?
 
@@ -36,21 +35,9 @@ The parameters can be used to generate a unique URL to the logs using a template
 | `{{ .podUnixFinishTime }}` | Don't have a good mechanism for this yet, but approximating with `time.Now` for now |
 
 
-The parameterization engine uses Golangs native templating format and hence uses `{{ }}`. An example configuration can be seen as follows:
+The parameterization engine uses Golangs native templating format and hence uses `{{ }}`.
 
-```yaml
-task_logs:
-  plugins:
-    logs:
-      templates:
-        - displayName: <name-to-show>
-          templateUris:
-            - "https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEventViewer:group=/flyte-production/kubernetes;stream=var.log.containers.{{.podName}}_{{.namespace}}_{{.containerName}}-{{.containerId}}.log"
-            - "https://some-other-source/home?region=us-east-1#logEventViewer:group=/flyte-production/kubernetes;stream=var.log.containers.{{.podName}}_{{.namespace}}_{{.containerName}}-{{.containerId}}.log"
-          messageFormat: 0 # this parameter is optional, but use 0 for "unknown", 1 for "csv", or 2 for "json"
-```
-
-Since helm chart uses the same templating syntax for args (like `{{ }}`), compiling the chart results in helm replacing Flyte log link templates as well. To avoid this, you can use escaped templating for Flyte logs in the helm chart.
+Since Helm chart uses the same templating syntax for args (like `{{ }}`), compiling the chart results in helm replacing Flyte log link templates as well. To avoid this, you can use escaped templating for Flyte logs in the helm chart.
 This ensures that Flyte log link templates remain in place during helm chart compilation.
 For example:
 
@@ -69,6 +56,93 @@ Flytepropeller pod would be created as:
 This code snippet will output two logs per task that use the log plugin.
 However, not all task types use the log plugin; for example, the Snowflake plugin will use a link to the Snowflake console.
 
+## Example configurations
+
+### AWS Cloudwatch
+
+```yaml
+task_logs:
+  plugins:
+    logs:
+      cloudwatch-enabled: true
+      cloudwatch-region: <AWS_REGION>
+      cloudwatch-log-group: <LOG_GROUP_NAME>
+      cloudwatch-template-uri: "https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEventViewer:group=/flyte-production/kubernetes;stream=var.log.containers.{{.podName}}_{{.namespace}}_{{.containerName}}-{{.containerId}}.log"
+  
+```
+### Stackdriver (Google Cloud Logging)
+
+```yaml
+task_logs:
+  plugins:
+    logs:
+      stackdriver-enabled: true
+      gcp-project: <GCP_PROJECT_NAME>
+      stackdriver-logresourcename": <LOG_NAME>
+      stackdriver-template-uri: "https://console.cloud.google.com/logs/query;query=resource.labels.namespace_name%3D%22{{`{{.namespace}}`}}%22%0Aresource.labels.pod_name%3D%7E%22{{`{{.podName}}`}}-exec%22?project={{.Values.storage.gcs.projectId}}&angularJsUrl=%2Flogs%2Fviewer%3Fproject%3D{{.Values.storage.gcs.projectId}}"
+```
+### Datadog
+
+1. Install the [Datadog operator](https://docs.datadoghq.com/containers/kubernetes/installation/?tab=datadogoperator) in your Kubernetes cluster
+2. Make sure your Datadog configuration enables collection of logs from containers and collection of logs using files:
+
+```yaml
+apiVersion: "datadoghq.com/v2alpha1"
+kind: "DatadogAgent"
+metadata:
+  name: "datadog"
+spec:
+  global:
+    site: <YOUR_DATADOG_INSTANCE>
+    credentials:
+      apiSecret:
+        secretName: "datadog-secret"
+        keyName: "api-key"
+  features:
+    logCollection:
+      enabled: true
+      containerCollectAll: true
+      containerCollectUsingFiles: true
+```
+
+If you're using environment variables, configure them accordingly:
+
+```bash
+DD_LOGS_ENABLED: "false"
+DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
+DD_LOGS_CONFIG_K8S_CONTAINER_USE_FILE: "true"
+DD_CONTAINER_EXCLUDE_LOGS: "name:datadog-connector" # This is to avoid tracking logs produced by the datadog connector itself
+```
+
+3. Upgrade your Flyte Helm installation with values that include the following:
+
+```yaml
+task_logs:
+    plugins:
+      logs:
+        templates:
+          - displayName: Datadog
+            templateUris:
+              - https://<YOUR_DATADOG_INSTANCE>/logs?query=pod_name%3A{{ "{{" }} .podName {{ "}}" }}%20&from_ts={{ "{{" }} .podUnixStartTime {{ "}}" }}000&to_ts={{ "{{" }} .podUnixFinishTime {{ "}}" }}999&live=false
+```
+### Kubernetes dashboard
+
+Flyte sandbox (`flytectl demo start`) ships with the Kubernetes dashboard already installed. The only missing step to use it is to configure [Access Control](https://github.com/kubernetes/dashboard/tree/master/docs/user/access-control).
+
+> This may not be scalable for production, hence we recommend exploring other log aggregators.
+
+To use the K8s dashboard in other Flyte distributions (`flyte-binary` or `flyte-core`) follow these steps:
+
+1. [Install the dashboard](https://github.com/kubernetes/dashboard?tab=readme-ov-file#installation) in your Kubernetes cluster and configure [Access Control](https://github.com/kubernetes/dashboard/tree/master/docs/user/access-control)
+2. Add the following to your Helm values file and upgrade the installed release:
+
+```yaml
+plugins:
+  logs:
+    kubernetes-enabled: true
+    kubernetes-template-uri: 'http://<YOUR_DASHBOARD_URL>/#/log/{{ "{{" }}.namespace {{ "}}" }}/{{ "{{" }} .podName {{ "}}" }}/pod?namespace={{ "{{" }} .namespace {{ "}}" }}'
+```
+
 ### Configure lifetime of logging links
 
 By default, log links are shown once a task starts running and do not disappear when the task finishes. Certain log links might, however, be helpful when a task is still queued or initializing, for instance, to debug why a task might not be able to start. Other log links might not be valid anymore once the task terminates. You can configure the lifetime of log links in the following way:
@@ -84,12 +158,15 @@ task_logs:
           templateUris:
             - "https://..."
 ```
+> Out-of-the-box persistent logs are available as a feature in Union.
 
 ### Configure dynamic log links
 
-Dynamic log links are links which are 1. not shown by default for all tasks and 2. which can use template variables provided during task registration.
+Dynamic log links have two unique characteristics:
+1. Not shown by default for all tasks, and 
+2. Can use template variables provided during task registration.
 
-Configure dynamic log links in the flytepropeller configuration the following way:
+Configure dynamic log links in the flytepropeller the following way:
 
 ```yaml
 configmap:
@@ -102,8 +179,10 @@ configmap:
             templateUris: 'https://some-service.com/{{ .taskConfig.custom_param }}'
 ```
 
-In `flytekit`, dynamic log links are activated and configured using a so-called `ClassDecorator`.
-You can define such a custom decorator for controlling dynamic log links for instance as follows:
+In `flytekit`, dynamic log links are activated and configured using a `ClassDecorator`.
+You can define such a custom decorator for controlling dynamic log links.
+
+**Example**
 
 ```python
 from flytekit.core.utils import ClassDecorator
@@ -172,30 +251,5 @@ def my_task():
 
 For inspiration, consider how the flytekit [wandb](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-wandb/flytekitplugins/wandb/tracking.py), [neptune](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-neptune/flytekitplugins/neptune/tracking.py) or [vscode](https://github.com/flyteorg/flytekit/blob/master/flytekit/interactive/vscode_lib/decorator.py) plugins make use of dynamic log links.
 
-## Datadog integration
-
-To send your Flyte workflow logs to Datadog, you can follow these steps:
-
-1. Enable collection of logs from containers and collection of logs using files. The precise configuration steps will vary depending on your specific setup.
-
-For instance, if you're using Helm, use the following config:
-
-```yaml
-logs:
-  enabled: true
-  containerCollectAll: true
-  containerCollectUsingFiles: true
-```
-
-If you're using environment variables, use the following config:
-
-```yaml
-DD_LOGS_ENABLED: "false"
-DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
-DD_LOGS_CONFIG_K8S_CONTAINER_USE_FILE: "true"
-DD_CONTAINER_EXCLUDE_LOGS: "name:datadog-connector" # This is to avoid tracking logs produced by the datadog connector itself
-```
-
-2. The Datadog [guide](https://docs.datadoghq.com/containers/kubernetes/log/?tab=daemonset) includes a section on mounting volumes. It is essential (and a prerequisite for proper functioning) to map the volumes "logpodpath" and "logcontainerpath" as illustrated in the linked example. While the "pointerdir" volume is optional, it is recommended that you map it to prevent the loss of container logs during restarts or network issues (as stated in the guide).
 
 
