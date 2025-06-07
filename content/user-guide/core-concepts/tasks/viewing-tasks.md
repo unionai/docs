@@ -10,7 +10,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Selecting **Tasks** in the sidebar displays a list of all the registered tasks:
 
-![Tasks list](/_static/images/user-guide/core-concepts/tasks/viewing-tasks/tasks-list.png)
+![Tasks list](../../../_static/images/user-guide/core-concepts/tasks/viewing-tasks/tasks-list.png)
 
 You can search the tasks by name and filter for only those that are archived.
 
@@ -26,7 +26,7 @@ Select an entry on the list to go to that [specific task](#task-view).
 
 Selecting an individual task from the [task list](#tasks-list) will take you to the task view:
 
-![Task view](/_static/images/user-guide/core-concepts/tasks/viewing-tasks/task-view.png)
+![Task view](../../../_static/images/user-guide/core-concepts/tasks/viewing-tasks/task-view.png)
 
 Here you can see:
 
@@ -38,7 +38,7 @@ Here you can see:
 
 The task versions list give you detailed information about a specific version of a task:
 
-![Task versions list](/_static/images/user-guide/core-concepts/tasks/viewing-tasks/task-versions-list.png)
+![Task versions list](../../../_static/images/user-guide/core-concepts/tasks/viewing-tasks/task-versions-list.png)
 
 * **Image**: The Docker image used to run this task.
 * **Env Vars**: The environment variables used by this task.

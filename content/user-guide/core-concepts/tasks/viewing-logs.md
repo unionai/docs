@@ -27,11 +27,11 @@ Also, if you configure the Kubernetes dashboard, the Flyte console will display 
 
 Within that panel, in the **Execution** tab, under **Logs**, you will find a link labeled **Task Logs**.
 
-![Task logs link](/_static/images/user-guide/core-concepts/tasks/viewing-logs/task-logs-link.png)
+![Task logs link](../../../_static/images/user-guide/core-concepts/tasks/viewing-logs/task-logs-link.png)
 
 This leads to the **Execution logs tab** of the **Execution details page**:
 
-![Execution logs](/_static/images/user-guide/core-concepts/tasks/viewing-logs/execution-logs.png)
+![Execution logs](../../../_static/images/user-guide/core-concepts/tasks/viewing-logs/execution-logs.png)
 
 The execution logs provide a live view into the standard output of the task execution.
 
@@ -41,7 +41,7 @@ For example, any `print` statements in the tasks Python code will be displayed h
 
 On the left side of the page you can also see the Kubernetes cluster logs for the task execution:
 
-![Kubernetes cluster logs](/_static/images/user-guide/core-concepts/tasks/viewing-logs/k8s-cluster-logs.png)
+![Kubernetes cluster logs](../../../_static/images/user-guide/core-concepts/tasks/viewing-logs/k8s-cluster-logs.png)
 
 ## Other tabs
 
@@ -58,7 +58,7 @@ In addition to the **Task Logs** link, you will also see a link to your cloud pr
 
 {{< markdown >}}
 
-![Cloud provider logs link](/_static/images/user-guide/core-concepts/tasks/viewing-logs/cloud-provider-logs-link.png)
+![Cloud provider logs link](../../../_static/images/user-guide/core-concepts/tasks/viewing-logs/cloud-provider-logs-link.png)
 
 Assuming you are logged into your cloud provider account with the appropriate permissions, this link will take you to the logs specific to the container in which this particular task execution is running.
 

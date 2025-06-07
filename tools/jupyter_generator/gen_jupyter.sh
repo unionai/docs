@@ -116,7 +116,7 @@ for file in $content; do
 EOF
     echo "" >> "$file.new"
     cat "$tmp_file" \
-        | sed -e "s#\($(basename "$file" .md).gen_files\)#../\1#" \
+        | sed -e "s#\($(basename "$file" .md).gen_files\)#./\1#" \
         | python tools/jupyter_generator/markdown_cleanup.py \
         >> "$file.new"
 

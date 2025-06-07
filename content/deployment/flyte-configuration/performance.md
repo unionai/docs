@@ -24,7 +24,7 @@ In the following sections you will learn how Flyte ensures the correct and relia
 Let's revisit the lifecycle of a workflow execution.
 The following diagram aims to summarize the process described in the [FlytePropeller Architecture](https://www.union.ai/docs/flyte/architecture/component-architecture/flytepropeller_architecture/) and [execution timeline](https://www.union.ai/docs/flyte/architecture/workflow-timeline/) sections, focusing on the main steps.
 
-![](/_static/images/deployment/propeller-perf-lifecycle-01.png)
+![](../../_static/images/deployment/propeller-perf-lifecycle-01.png)
 
 The ``Worker`` is the independent, lightweight, and idempotent process that interacts with all the components in the Propeller controller to drive executions.
 It's implemented as a ``goroutine``, and illustrated here as a hard-working gopher which:
@@ -87,7 +87,7 @@ While it's possible to easily monitor Kube API saturation using system-level met
 
 **How `ResourceVersionCache` works?**
 
-![](/_static/images/deployment/resourceversion-01.png)
+![](../../_static/images/deployment/resourceversion-01.png)
 
 Kubernetes stores the definition and state of all the resources under its management on ``etcd``: a fast, distributed and consistent key-value store.
 Every resource has a ``resourceVersion`` field representing the version of that resource as stored in ``etcd``.

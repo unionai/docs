@@ -77,11 +77,11 @@ $ flytectl create project \
 
 You can create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
 
-![Select all projects](/_static/images/user-guide/development-cycle/setting-up-a-project/select-all-projects.png)
+![Select all projects](../../_static/images/user-guide/development-cycle/setting-up-a-project/select-all-projects.png)
 
 This will take you to the **Projects list**:
 
-![Projects list](/_static/images/user-guide/development-cycle/setting-up-a-project/projects-list.png)
+![Projects list](../../_static/images/user-guide/development-cycle/setting-up-a-project/projects-list.png)
 
 Click on the **New Project** button and fill in the details for your new project.
 

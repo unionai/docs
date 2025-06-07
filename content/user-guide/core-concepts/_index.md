@@ -56,7 +56,7 @@ When the workflow is registered, {{< key product_name >}} compiles the workflow 
 The DAG is then used to execute the tasks in the correct order, taking advantage of any parallelism that is possible.
 For example, the workflow above results in the following DAG:
 
-![Workflow DAG](/_static/images/user-guide/core-concepts/workflow-dag.png)
+![Workflow DAG](../../_static/images/user-guide/core-concepts/workflow-dag.png)
 
 ### Type annotation is required
 

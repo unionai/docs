@@ -214,7 +214,7 @@ def wf(init_value: int = 1, state: int = 3) -> int:
 {{< /markdown >}}
 {{< /variant >}}
 
-![Actor caching example 1](/_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
+![Actor caching example 1](../../../_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
 
 You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time.
 

@@ -20,5 +20,5 @@ Executions are instances of workflows, nodes or tasks created in the system as a
 
 * This executable workflow is launched on Kubernetes with an execution record in the database.
 
-![Flyte executions overview](/_static/images/architecture/executions/flyte-executions-overview.svg)
+![Flyte executions overview](../_static/images/architecture/executions/flyte-executions-overview.svg)
 

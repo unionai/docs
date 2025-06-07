@@ -26,7 +26,7 @@ the UI at [serverless.union.ai](https://serverless.union.ai).
 To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
 This will take you to `{{< key default_project >}}` project dashboard:
 
-![{{< key product_name >}} UI](/_static/images/quick-start/serverless-dashboard.png)
+![{{< key product_name >}} UI](../../_static/images/quick-start/serverless-dashboard.png)
 
 ## Run your first workflow
 
@@ -40,7 +40,7 @@ Select **Workspaces** in the left navigation bar.
 
 Start the default workspace by clicking on the `default` workspace item.
 
-![Start workspace](/_static/images/quick-start/serverless-workspace-start.png))
+![Start workspace](../../_static/images/quick-start/serverless-workspace-start.png))
 {{< /markdown >}}
 {{< /dropdown >}}
 
@@ -52,7 +52,7 @@ again to open the workspace.
 
 _It will take a few moments to load the VSCode interface._
 
-![Open workspace](/_static/images/quick-start/serverless-workspace-open.png)
+![Open workspace](../../_static/images/quick-start/serverless-workspace-open.png)
 :::)
 
 {{< /markdown >}}
@@ -63,7 +63,7 @@ _It will take a few moments to load the VSCode interface._
 
 Once the workspace is open, you should see a VSCode interface in your browser.
 
-![Workspace VSCode](/_static/images/quick-start/serverless-workspace-vscode.png)
+![Workspace VSCode](../../_static/images/quick-start/serverless-workspace-vscode.png)
 
 In the walkthrough, you'll learn how to:
 
@@ -81,7 +81,7 @@ In the walkthrough, you'll learn how to:
 The workspace will terminate after 20 minutes of idle time, but you can also
 stop it manually on the Workspaces page.
 
-![Open workspace](/_static/images/quick-start/serverless-workspace-stop.png)
+![Open workspace](../../_static/images/quick-start/serverless-workspace-stop.png)
 
 {{< /markdown >}}
 {{< /dropdown >}}
@@ -111,7 +111,7 @@ Once you have logged in you should see the {{< key product_name >}} UI.
 To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
 This will take you to `{{< key default_project >}}` project dashboard:
 
-![{{< key product_name >}} UI](/_static/images/quick-start/byoc-dashboard.png)
+![{{< key product_name >}} UI](../../_static/images/quick-start/byoc-dashboard.png)
 
 This dashboard gives you an overview of the workflows and tasks in your project.
 Since you are just starting out, it will be empty.

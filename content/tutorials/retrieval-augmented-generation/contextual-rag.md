@@ -10,7 +10,7 @@ This notebook walks you through building a Contextual RAG (Retrieval-Augmented G
 
 We take the [existing Contextual RAG Together app](https://docs.together.ai/docs/how-to-implement-contextual-rag-from-anthropic) and make it "production-grade" with {{< key product_name >}} — ready for enterprise deployment.
 
-![Contextual RAG App](/_static/images/tutorials/retrieval-augmented-generation/contextual-rag/contextual_rag.png)
+![Contextual RAG App](../../_static/images/tutorials/retrieval-augmented-generation/contextual-rag/contextual_rag.png)
 
 ## Workflow overview
 

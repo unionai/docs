@@ -10,7 +10,7 @@ The **Executions list** shows all executions in a project and domain combination
 An execution represents a single run of all or part of a workflow (including subworkflows and individual tasks).
 You can access it from the **Executions** link in the left navigation.
 
-![Executions list](/_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/executions-list.png)
+![Executions list](../../../_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/executions-list.png)
 
 ## Domain Settings
 
@@ -42,7 +42,7 @@ The execution view appears when you launch a workflow or task or select an alrea
 
 An execution represents a single run of all or part of a workflow (including subworkflows and individual tasks).
 
-![Execution view - nodes](/_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-nodes.png)
+![Execution view - nodes](../../../_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-nodes.png)
 
 > [!NOTE]
 > An execution usually represents the run of an entire workflow.
@@ -59,7 +59,7 @@ It shows a list of the {{< key product_name >}} nodes that make up this executio
 
 Selecting an item in the list opens the right panel showing more details of that specific node:
 
-![](/_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-node-side-panel.png)
+![](../../../_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-node-side-panel.png)
 
 The top part of the side panel provides detailed information about the node as well as the **Rerun task** button.
 
@@ -79,10 +79,10 @@ If this node is a task (as opposed to a subworkflow) then the **Task** tab displ
 
 The Graph tab displays a visual representation of the execution as a directed acyclic graph:
 
-![](/_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-graph.png)
+![](../../../_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-graph.png)
 
 ### Timeline
 
 The Timeline tab displays a visualization showing the timing of each task in the execution:
 
-![](/_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-timeline.png)
+![](../../../_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-timeline.png)

@@ -48,6 +48,7 @@
 {{- if not hugo.IsProduction -}}
     onmouseenter="document.getElementById('devwarn').style.display = '';"
     onmouseout="document.getElementById('devwarn').style.display = 'none';"
+    disabled
 {{- end -}}
 >
         {{- range $variants -}}

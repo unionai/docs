@@ -74,10 +74,10 @@ data = BasicArtifact.get(<organization>/<domain>/BasicArtifact@<artifact-version
 
 To launch a workflow that consumes an artifact as one of its inputs, navigate to the workflow in the UI and click **Launch Workflow**:
 
-![Launch workflow UI with artifact query](/_static/images/user-guide/core-concepts/artifacts/consuming-artifacts-in-workflows/launch-workflow-artifact-query.png)
+![Launch workflow UI with artifact query](../../../_static/images/user-guide/core-concepts/artifacts/consuming-artifacts-in-workflows/launch-workflow-artifact-query.png)
 
 In the `query_wf` example, the workflow takes three inputs: `key1`, `dt`, and a `BasicArtifact` artifact query. In order to create the workflow execution, you would enter values for `key1` and `dt` and click **Launch**. The artifacts service will supply the latest version of the `BasicData` artifact that meets the partition query criteria.
 
 You can also override the artifact query from the launch form by clicking **Override**, directly supplying the input that the artifact references (in this case, a blob store URI), and clicking **Launch**:
 
-![Launch workflow UI with artifact query override](/_static/images/user-guide/core-concepts/artifacts/consuming-artifacts-in-workflows/launch-workflow-artifact-query-override.png)
+![Launch workflow UI with artifact query override](../../../_static/images/user-guide/core-concepts/artifacts/consuming-artifacts-in-workflows/launch-workflow-artifact-query-override.png)

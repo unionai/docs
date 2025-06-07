@@ -451,4 +451,4 @@ The process can be repeated for additional clusters.
 
 10. A successful execution should be visible on the UI, confirming it ran in the new cluster:
 
-    ![](/_static/images/deployment/multicluster-execution.png)
+![](../../_static/images/deployment/multicluster-execution.png)

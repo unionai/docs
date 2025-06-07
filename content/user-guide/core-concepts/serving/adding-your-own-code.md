@@ -126,7 +126,7 @@ specification.
 
 Navigate to the endpoint to see the Streamlit App!
 
-![Streamlit App](/_static/images/user-guide/core-concepts/serving/custom-code-streamlit.png)
+![Streamlit App](../../../_static/images/user-guide/core-concepts/serving/custom-code-streamlit.png)
 
 ## App deployment with included files
 

@@ -29,7 +29,7 @@ Cost allocation is designed to show where costs are being incurred and to highli
 
 Cost data is accessed by selecting the **Cost** button in the top right of the {{< key product_name >}} interface:
 
-![Cost link](/_static/images/user-guide/administration/cost-allocation/cost-link.png)
+![Cost link](../../_static/images/user-guide/administration/cost-allocation/cost-link.png)
 
 The **Cost** view displays three top level tabs: **Workload Costs**, **Compute Costs**, and **Invoices**.
 
@@ -39,22 +39,22 @@ This tab provides a detailed breakdown of workflow/task costs and resource utili
 It offers views showing total cost, allocated memory, memory utilization, allocated CPU, CPU utilization, allocated GPU, and average GPU SM occupancy.
 Additionally, the time series shows total cost per Workflow/Task in a stacked bar format with 15-minute bars.
 
-![Workload costs 1](/_static/images/user-guide/administration/cost-allocation/workload-costs-1.png)
+![Workload costs 1](../../_static/images/user-guide/administration/cost-allocation/workload-costs-1.png)
 
-![Workload costs 2](/_static/images/user-guide/administration/cost-allocation/workload-costs-2.png)
+![Workload costs 2](../../_static/images/user-guide/administration/cost-allocation/workload-costs-2.png)
 
 ### Compute Costs
 
 This tab provides a summary of the cluster's overall compute costs.
 It includes information on total cost of worker nodes, total uptime by node type, and total cost by node type.
 
-![Compute costs](/_static/images/user-guide/administration/cost-allocation/compute-costs.png)
+![Compute costs](../../_static/images/user-guide/administration/cost-allocation/compute-costs.png)
 
 ### Invoices
 
 This tab displays the total cost of running workflows and tasks in your {{< key product_name >}} installation broken out by invoice.
 
-![Invoices](/_static/images/user-guide/administration/cost-allocation/invoices.png)
+![Invoices](../../_static/images/user-guide/administration/cost-allocation/invoices.png)
 
 ## Data collection and cost calculation
 

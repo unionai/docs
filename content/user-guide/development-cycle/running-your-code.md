@@ -35,7 +35,7 @@ The {{< key cli_name >}} CLI and {{<key ctl_name >}} CLI provide commands that a
 
 The following diagram provides a summarized view of the different registration patterns:
 
-![Registration patterns](/_static/images/user-guide/development-cycle/running-your-code/registration-patterns.png)
+![Registration patterns](../../_static/images/user-guide/development-cycle/running-your-code/registration-patterns.png)
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -323,9 +323,9 @@ Once the code is packaged you register it using the `{{< key ctl >}}` CLI:
 
 ```shell
 $ {{< key ctl >}} register files \
-      --project basic-example
+      --project basic-example \
       --domain development \
-      --archive flyte-package.tgz
+      --archive flyte-package.tgz \
       --version "$(git rev-parse HEAD)"
 ```
 

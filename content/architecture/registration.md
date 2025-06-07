@@ -8,7 +8,7 @@ variants: +flyte -serverless -byoc -selfmanaged
 
 During registration, Flyte validates the workflow structure and saves the workflow. The registration process also updates the workflow graph.
 
-![Flyte registration overview](/_static/images/architecture/registration/flyte-registration-overview.svg)
+![Flyte registration overview](../_static/images/architecture/registration/flyte-registration-overview.svg)
 
 ## Typical Flow
 

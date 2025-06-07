@@ -217,7 +217,7 @@ $ {{< key cli >}} run --remote --overwrite-cache example.py wf
 
 You can also trigger cache invalidation when launching an execution from the UI by checking **Override**, in the launch dialog:
 
-![Overwrite cache flag in the UI](/_static/images/user-guide/core-concepts/caching/overwrite-cached-outputs.png)
+![Overwrite cache flag in the UI](../../_static/images/user-guide/core-concepts/caching/overwrite-cached-outputs.png)
 
 ### Overwrite cache programmatically
 

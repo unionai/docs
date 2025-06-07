@@ -162,7 +162,7 @@ This task trains a `RandomForestRegressor`, saves it to a file, and uploads it t
 a {{< key product_name >}} `Artifact`. This artifact is retrieved layer by the FastAPI app for
 serving the model.
 
-![scikit-learn Artifact](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-artifact.png)
+![scikit-learn Artifact](../../../_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-artifact.png)
 
 Once the workflow has completed, you can deploy the app:
 
@@ -188,4 +188,4 @@ specification.
 
 You can see the Swagger docs of the FastAPI endpoint, by going to `/docs`:
 
-![scikit-learn FastAPI App](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-fastapi.png)
+![scikit-learn FastAPI App](../../../_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-fastapi.png)

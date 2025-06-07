@@ -153,11 +153,11 @@ The initial {{< key product_name >}} onboarding process will set up your organiz
 To add and remove users and to assign and unassign roles, you have to be an **Admin**.
 As an **Admin** you should see a **Users** icon at the top-right of the UI:
 
-![](/_static/images/user-guide/administration/user-management/users-button.png)
+![](../../_static/images/user-guide/administration/user-management/users-button.png)
 
 Select this icon to display the **User Management** dialog displays the list of users:
 
-![](/_static/images/user-guide/administration/user-management/user-management.png "medium")
+![](../../_static/images/user-guide/administration/user-management/user-management.png "medium")
 
 Each user is listed with their assigned policies. You can search the list and filter by policy.
 
@@ -167,7 +167,7 @@ To add a new user, select **ADD USER**.
 
 In the **Add User** dialog, fill in the name and email of the new user and select the policies to assign, then select either **SUBMIT** or **SUBMIT AND ADD ANOTHER USER**:
 
-![](/_static/images/user-guide/administration/user-management/add-user.png "medium")
+![](../../_static/images/user-guide/administration/user-management/add-user.png "medium")
 
 The new user should expect to see an email invite from Okta after they have been added through this dialog.
 They should accept the invite and set up a password. At that point, they will be able to access the {{< key product_name >}} UI.
@@ -176,7 +176,7 @@ They should accept the invite and set up a password. At that point, they will be
 
 To change a user's assigned policies, go to the **User Management** dialog and select the user. The **Edit User** dialog will appear:
 
-![](/_static/images/user-guide/administration/user-management/edit-user.png "medium")
+![](../../_static/images/user-guide/administration/user-management/edit-user.png "medium")
 
 To adjust the assigned policies, simply toggle the appropriate buttons and select **SUBMIT**.
 

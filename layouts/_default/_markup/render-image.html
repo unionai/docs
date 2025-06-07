@@ -11,6 +11,8 @@
   {{ end }}
 {{ end }}
 
+{{ $destination = partial "rel-link.html" $destination }}
+
 <img src="{{ $destination | safeURL }}"
     {{- with .PlainText }} alt="{{ . }}"{{ end -}}
     {{- with .Title }} title="{{ . }}"{{ end -}}
