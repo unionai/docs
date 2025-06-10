@@ -29,11 +29,11 @@ A launch plan version with a schedule attached can be activated through either t
 
 To activate a launch plan, go to the launch plan view and click **Add active launch plan** in the top right corner of the screen:
 
-![Activate schedule](/_static/images/user-guide/core-concepts/launch-plans/activating-and-deactivating/add-active-launch-plan.png)
+![Activate schedule](../../../_static/images/user-guide/core-concepts/launch-plans/activating-and-deactivating/add-active-launch-plan.png)
 
 A modal will appear that lets you select which launch plan version to activate:
 
-![Activate schedule](/_static/images/user-guide/core-concepts/launch-plans/activating-and-deactivating/update-active-launch-plan-dialog.png)
+![Activate schedule](../../../_static/images/user-guide/core-concepts/launch-plans/activating-and-deactivating/update-active-launch-plan-dialog.png)
 
 This modal will contain all versions of the launch plan that have an attached schedule.
 Note that at most one version (and therefore at most one schedule) of a launch plan can be active at any given time.
@@ -48,7 +48,7 @@ The launch plan version and schedule are now activated. The launch plan will be 
 
 To deactivate a launch plan, navigate to a launch plan with an active schedule, click the **...** icon in the top-right corner of the screen beside **Active launch plan**, and click “Deactivate”.
 
-![Deactivate schedule](/_static/images/user-guide/core-concepts/launch-plans/activating-and-deactivating/deactivate-launch-plan.png)
+![Deactivate schedule](../../../_static/images/user-guide/core-concepts/launch-plans/activating-and-deactivating/deactivate-launch-plan.png)
 
 A confirmation modal will appear, allowing you to deactivate the launch plan and its schedule.
 

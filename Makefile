@@ -11,23 +11,15 @@ all: usage
 usage:
 	@./scripts/make_usage.sh
 
-predist:
-	@if ! scripts/pre-build-checks.sh; then exit 1; fi
-
-# Add back when predist is fixed to not trigger error on full URLs inside backticks
-# base: predist
-
 base:
+	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
-	mkdir -p dist/${PREFIX}
-	mkdir -p dist/_static
+	mkdir -p dist
+	mkdir -p dist/docs
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
-	@if [ ! -z ${VERSION} ]; then cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/${VERSION}/index.html; fi
-	cp -R static/* dist/${PREFIX}/
-	cp -R content/_static/* dist/_static/
-	@if ! ./scripts/gen_build_info.sh; then exit 1; fi
+	#cp -R static/* dist/${PREFIX}/
 
 dist: base
 	make variant VARIANT=flyte
@@ -56,3 +48,8 @@ update-examples:
 init-examples:
 	git submodule update --init
 
+check-jupyter:
+	./tools/jupyter_generator/check_jupyter.sh
+
+check-images:
+	./scripts/check_images.sh

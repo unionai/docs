@@ -133,19 +133,19 @@ To register the code to a project on {{< key product_name >}} as usual and run t
 2. Wait until the task is in the **Running** state and the **VSCode (User)** link appears.
 3. Click the **VSCode (User)** link.
 
-![VSCode link](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/vscode-link.png)
+![VSCode link](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/vscode-link.png)
 
 ## Inspect the task code
 
 Once the IDE opens, you will be able to see your task code in the editor.
 
-![Inspect code](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/inspect-code.png)
+![Inspect code](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/inspect-code.png)
 
 ## Interactive debugging
 
 To run the task in VSCode, click the _Run and debug_ symbol on the left rail of the IDE and select the **Interactive Debugging** configuration.
 
-![Interactive debugging](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/interactive-debugging.png)
+![Interactive debugging](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/interactive-debugging.png)
 
 Click the **Play** button beside the configuration drop-down to run the task.
 This will run your task with inputs from the previous task. To inspect intermediate states, set breakpoints in the Python code and use the debugger for tracing.
@@ -167,7 +167,7 @@ This will terminate the code server, run the task with inputs from the previous 
 > [!NOTE] Remember to persist your code
 > Remember to persist your code (for example, by checking it into GitHub) before resuming the task, since you will lose the connection to the VSCode server afterwards.
 
-![Resume task](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/resume-task.png)
+![Resume task](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/resume-task.png)
 
 ## Auxiliary Python files
 
@@ -177,25 +177,25 @@ You will notice that aside from your code, there are some additional files in th
 
 The `flyteinteractive_interactive_entrypoint.py` script implements the **Interactive Debugging** action that we used above:
 
-![Interactive entrypoint](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/flyteinteractive-interactive-entrypoint-py.png)
+![Interactive entrypoint](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/flyteinteractive-interactive-entrypoint-py.png)
 
 ### flyteinteractive_resume_task.py
 
 The `flyteinteractive_resume_task.py` script implements the **Resume Task** action that we used above:
 
-![Resume task](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/flyteinteractive-resume-task-py.png)
+![Resume task](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/flyteinteractive-resume-task-py.png)
 
 ### launch.json
 
 The `launch.json` file in the `.vscode` directory configures the **Interactive Debugging** and **Resume Task** actions.
 
-![launch.json](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/launch-json.png)
+![launch.json](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/launch-json.png)
 
 ## Integrated terminal
 
 In addition to using the convenience functions defined by the auxiliary files, you can also run your Python code script directly from the integrated terminal using `python <script_name>.py` (in this example, `python hello.py`).
 
-![Interactive terminal](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/interactive-terminal.png)
+![Interactive terminal](../../_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/interactive-terminal.png)
 
 ## Install extensions
 

@@ -144,11 +144,11 @@ We could use fast metadata stores to speed up data movement or exploit locality.
 
 ### Between FlytePropeller and tasks
 
-[Flyte data movement](/_static/images/architecture/data-handling/flyte-data-movement.png)
+![Flyte data movement](../_static/images/architecture/data-handling/flyte-data-movement.png)
 
 ### Between tasks
 
-[Flyte data transfer](/_static/images/architecture/data-handling/flyte-data-transfer.png)
+![Flyte data transfer](../_static/images/architecture/data-handling/flyte-data-transfer.png)
 
 ### Practical example
 

@@ -1,0 +1,20 @@
+{{- $target := . }}
+{{- $hasShortcode := hasPrefix $target "HAHAHUGOSHORTCODE" -}}
+{{- $link := $target }}
+{{/* If a shortcode starts the link, use it AS IS */}}
+{{- if or $hasShortcode (hasPrefix $target "http://") (hasPrefix $target "https://") (hasPrefix $target "mailto:") -}}
+    {{/* do nothing */}}
+{{- else if or (in page.RelPermalink "/api-reference/") -}}
+    {{/* do nothing */}}
+{{- else -}}
+    {{ $dest := strings.TrimSuffix ".md" $target }}
+    {{ $dest = strings.TrimSuffix "_index" $dest }}
+    {{- if or (hasPrefix $dest "/") (hasPrefix $dest "http") -}}
+        {{- $link = $dest -}}
+    {{- else if (hasSuffix page "_index.md") -}}
+        {{- $link = printf "%s%s" page.RelPermalink $dest -}}
+    {{- else -}}
+        {{- $link = printf "%s../%s" page.RelPermalink $dest -}}
+    {{- end -}}
+{{- end -}}
+{{- return $link -}}

@@ -106,19 +106,19 @@ Created Endpoint at: https://withered--firefly--8ca31.apps.demo.hosted.unionai.c
 
 Click on the displayed endpoint to go to the app:
 
-![A simple app](/_static/images/user-guide/core-concepts/serving/streamlit-hello.png)
+![A simple app](../../../_static/images/user-guide/core-concepts/serving/streamlit-hello.png)
 
 ## Viewing deployed apps
 
 Go to **Apps** in the left sidebar in {{< key product_name >}} to see a list of all your deployed apps:
 
-![Apps list](/_static/images/user-guide/core-concepts/serving/apps-list.png)
+![Apps list](../../../_static/images/user-guide/core-concepts/serving/apps-list.png)
 
 To connect to an app click on its **Endpoint**.
 To see more information about the app, click on its **Name**.
 This will take you to the **App view**:
 
-![App view](/_static/images/user-guide/core-concepts/serving/app-view.png)
+![App view](../../../_static/images/user-guide/core-concepts/serving/app-view.png)
 
 Buttons to **Copy Endpoint** and **Start app** are available at the top of the view.
 

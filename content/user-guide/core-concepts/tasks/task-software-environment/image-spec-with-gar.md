@@ -18,7 +18,7 @@ If you are using GAR in the same Google Cloud Platform (GCP) project as your {{<
 Access to GAR in the same project is enabled by default.
 
 If you want to store your task container images in a GAR repository in a GCP project _other than the one that holds your data plane_, you must enable the node pool of your data plane to access that GAR.
-See [Enable Google Artifact Registry](../../../integrations/enabling-gcp-resources/enabling-google-artifact-registry) for details.
+See [Enable Google Artifact Registry](../../../../deployment/enabling-gcp-resources/enabling-google-artifact-registry) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -58,7 +58,7 @@ In the GCP console, within the same project as your Flyte installation, go to **
 {{< /markdown >}}
 {{< /variant >}}
 
-![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-create-repository-1.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-create-repository-1.png)
 
 On the **Create repository** page,
 
@@ -72,7 +72,7 @@ On the **Create repository** page,
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant flyte>}}
+{{< variant flyte >}}
 {{< markdown >}}
 
 * Select the region. If you want to access the GAR without further configuration, make sure this the same region as your Flyte cluster.
@@ -82,7 +82,7 @@ On the **Create repository** page,
 
 * Click **Create**:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-create-repository-2.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-create-repository-2.png)
 
 Your GAR repository is now created.
 
@@ -92,7 +92,7 @@ You will need to set up your local Docker client to authenticate with GAR. This 
 
 Directions can be found in the GAR console interface. Click on **Setup Instructions**:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-setup-instructions.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-setup-instructions.png)
 
 The directions are also reproduced below. (We show the directions for the `us-east1` region. You may need to adjust the command accordingly):
 

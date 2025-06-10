@@ -9,11 +9,11 @@ variants: -flyte +serverless +byoc +selfmanaged
 In the [Execution view](../../workflows/viewing-workflow-executions), selecting a task within the list will open the right panel.
 In that panel, you will find the **View Utilization** button:
 
-![View Utilization](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/execution-view-right-panel-executions-view-util.png)
+![View Utilization](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/execution-view-right-panel-executions-view-util.png)
 
 Clicking this will take you to the **task-level monitoring** page:
 
-![Task-level monitoring](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring.png)
+![Task-level monitoring](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring.png)
 
 ## Execution Resources
 
@@ -31,7 +31,7 @@ These parameters are reflected in the displayed **Memory Quota** and **CPU Cores
 
 ### Memory Quota
 
-![Memory Quota](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-memory-quota.png)
+![Memory Quota](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-memory-quota.png)
 
 This chart shows the memory consumption of the task.
 
@@ -44,7 +44,7 @@ Since the memory used can sometimes exceed the memory requested, this percentage
 
 ### CPU Cores Quota
 
-![CPU Cores Quota](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-cpu-cores-quota.png)
+![CPU Cores Quota](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-cpu-cores-quota.png)
 
 This chart displays the number of CPU cores being used.
 
@@ -54,19 +54,19 @@ This chart displays the number of CPU cores being used.
 
 ### GPU Memory Utilization
 
-![GPU Memory Utilization](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-gpu-memory-utilization.png)
+![GPU Memory Utilization](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-gpu-memory-utilization.png)
 
 This chart displays the amount of GPU memory used for each GPU.
 
 ### GPU Utilization
 
-![GPU Utilization](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-gpu-utilization.png)
+![GPU Utilization](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-gpu-utilization.png)
 
 This chart displays the GPU core utilization as a percentage of the GPUs allocated (the `requests.gpu` parameter).
 
 ## Execution Logs (Preview)
 
-![Execution Logs (Preview)](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-execution-logs.png)
+![Execution Logs (Preview)](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/task-level-monitoring-execution-logs.png)
 
 This tab is a preview feature that displays the `stdout` (the standard output) of the container running the task.
 Currently, it only shows content while the task is actually running.
@@ -76,14 +76,14 @@ Currently, it only shows content while the task is actually running.
 When the task you want to monitor is a **map task**, accessing the utilization data is a bit different.
 Here is the task execution view of map task. Open the drop-down to reveal each subtask within the map task:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/map-task-1.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/map-task-1.png)
 
 Drill down by clicking on one of the subtasks:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/map-task-2.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/map-task-2.png)
 
 This will bring you to the individual subtask information panel, where the **View Utilization** button for the subtask can be found:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/map-task-3.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/map-task-3.png)
 
 Clicking on View Utilization will take you to the task-level monitoring page for the subtask, which will have the same structure and features as the task-level monitoring page for a standard task (see above).

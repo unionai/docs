@@ -75,7 +75,7 @@ def train():
 4. You can access the server by opening a web browser and navigating to `localhost:8080`.
 
 VSCode example screenshot:
-![VSCode example](/_static/images/plugins/flyteinteractive/vscode_example.png)
+![VSCode example](../../../_static/images/plugins/flyteinteractive/vscode_example.png)
 
 ## Build Custom Image with VSCode Plugin
 If users want to skip the vscode downloading process at runtime, they have the option to create a custom image with vscode by including the following lines in their Dockerfile.
@@ -166,4 +166,4 @@ def train():
 4. You can access the server by opening a web browser and navigating to `localhost:8888`.
 
 Jupyter example screenshot:
-![Jupyter example](/_static/images/plugins/flyteinteractive/jupyter_example.png)
+![Jupyter example](../../../_static/images/plugins/flyteinteractive/jupyter_example.png)

@@ -62,7 +62,7 @@ Once the workflow completes, the output is passed back to the `run_workflow` fun
 
 The output is also be available via the UI, in the **Outputs** tab of the `create_file` task details view:
 
-![Outputs](/_static/images/user-guide/development-cycle/union-remote/outputs.png)
+![Outputs](../../../_static/images/user-guide/development-cycle/union-remote/outputs.png)
 
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
 For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint]().

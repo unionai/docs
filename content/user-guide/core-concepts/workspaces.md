@@ -26,12 +26,12 @@ With workspaces, you can:
 To create a workspace, click on the **Workspace** tab on left navbar and click
 on the **New Workspace** button on the top right.
 
-![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-1.png)
+![Create Workspace](../../_static/images/user-guide/core-concepts/workspaces/create-new-workspace-1.png)
 
 Provide a name for your workspace, set an **Idle TTL** (time to live), and
 click **Create**.
 
-![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-2.png)
+![Create Workspace](../../_static/images/user-guide/core-concepts/workspaces/create-new-workspace-2.png)
 
 > [!NOTE]
 > The Idle TTL is the amount of time a workspace will be idle before it is
@@ -40,21 +40,21 @@ click **Create**.
 
 You should see a new workspace created in the Workspaces view:
 
-![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-3.png)
+![Create Workspace](../../_static/images/user-guide/core-concepts/workspaces/create-new-workspace-3.png)
 
 ## Running a workspace
 
 To run a workspace, click on the switch on the workspace item:
 
-![Run Workspace](/_static/images/user-guide/core-concepts/workspaces/run-workspace-1.png)
+![Run Workspace](../../_static/images/user-guide/core-concepts/workspaces/run-workspace-1.png)
 
 Once the workspace has started, you can click on the **Open in VSCode** button:
 
-![Run Workspace](/_static/images/user-guide/core-concepts/workspaces/run-workspace-2.png)
+![Run Workspace](../../_static/images/user-guide/core-concepts/workspaces/run-workspace-2.png)
 
 Once the startup commands have completed, you'll see a browser-based VSCode IDE:
 
-![Run Workspace](/_static/images/user-guide/core-concepts/workspaces/run-workspace-3.png)
+![Run Workspace](../../_static/images/user-guide/core-concepts/workspaces/run-workspace-3.png)
 
 To stop a workspace, click on the toggle switch on the workspace item.
 
@@ -75,30 +75,30 @@ This allows you to save data, code, models, and other files in your workspace.
 
 Change the workspace configuration by clicking on the **Edit** button:
 
-![Edit Workspace](/_static/images/user-guide/core-concepts/workspaces/edit-workspace-1.png)
+![Edit Workspace](../../_static/images/user-guide/core-concepts/workspaces/edit-workspace-1.png)
 
 Note that you can change everything except the workspace name.
 
-![Edit Workspace](/_static/images/user-guide/core-concepts/workspaces/edit-workspace-2.png)
+![Edit Workspace](../../_static/images/user-guide/core-concepts/workspaces/edit-workspace-2.png)
 
 ## The workspace detail view
 
 Clicking on the workspace item on the list view will reveal the workspace detail view,
 which provides all the information about the workspace.
 
-![Workspace Detail](/_static/images/user-guide/core-concepts/workspaces/workspace-detail.png)
+![Workspace Detail](../../_static/images/user-guide/core-concepts/workspaces/workspace-detail.png)
 
 ## Archiving a workspace
 
 Archive a workspace by clicking on the **Archive** button:
 
-![Archive Workspace](/_static/images/user-guide/core-concepts/workspaces/archive-workspace.png)
+![Archive Workspace](../../_static/images/user-guide/core-concepts/workspaces/archive-workspace.png)
 
 Show archived workspaces by clicking on the **Show archived** toggle
 on the top right of the workspaces list view. Unarchive a workspace by clicking
 on the **Unarchive** button:
 
-![Unarchive Workspace](/_static/images/user-guide/core-concepts/workspaces/unarchive-workspace.png)
+![Unarchive Workspace](../../_static/images/user-guide/core-concepts/workspaces/unarchive-workspace.png)
 
 ## Workspace CLI commands
 
@@ -253,7 +253,7 @@ Set secrets for your workspace by clicking on the **Secrets** tab in the sidebar
 Provide the `my_secret` key and optionally, the environment variable you want
 to assign it to in the workspace.
 
-![Secrets](/_static/images/user-guide/core-concepts/workspaces/setting-secrets.png)
+![Secrets](../../_static/images/user-guide/core-concepts/workspaces/setting-secrets.png)
 
 #### Setting secrets via the CLI
 
@@ -277,7 +277,7 @@ secrets:
 
 You can also set the resources for your workspace:
 
-![Resources](/_static/images/user-guide/core-concepts/workspaces/setting-resources.png)
+![Resources](../../_static/images/user-guide/core-concepts/workspaces/setting-resources.png)
 
 {{< variant serverless >}}
 {{< markdown >}}
@@ -286,7 +286,7 @@ These resources must be compatible with the resource limits available to you
 on your Union.ai serverless account. Go the the top-level dashboard to view your
 execution settings:
 
-![Execution Settings](/_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
+![Execution Settings](../../_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
 
 For the `GPU` field, you can choose one of the following values:
 
@@ -305,7 +305,7 @@ Learn more about the available accelerators [here](./tasks/task-hardware-environ
 These resources must be compatible with the resources available to your BYOC
 cluster. Find the details of your BYOC cluster in the top-level dashboard:
 
-![BYOC Compute Resources](/_static/images/user-guide/core-concepts/workspaces/byoc-compute-resources.png)
+![BYOC Compute Resources](../../_static/images/user-guide/core-concepts/workspaces/byoc-compute-resources.png)
 
 You can choose [the GPU accelerator](./tasks/task-hardware-environment/accelerators) that corresponds to your available instance types. In the screen shot above, the accelerator
 value is `nvidia-tesla-v100`.
@@ -318,7 +318,7 @@ value is `nvidia-tesla-v100`.
 If you need to run any commands like install additional dependencies or `wget`
 a file from the web, specify custom `on_startup` commands:
 
-![On Startup](/_static/images/user-guide/core-concepts/workspaces/customize-onstartup.png)
+![On Startup](../../_static/images/user-guide/core-concepts/workspaces/customize-onstartup.png)
 
 ### Specifying custom container images
 
@@ -343,13 +343,13 @@ tab in the sidebar and provide the image name in the workspace creation form.
 > The minimum requirement for custom images is that it has `union>=0.1.166`
 > installed in it.
 
-![Custom Container](/_static/images/user-guide/core-concepts/workspaces/customize-container-image.png)
+![Custom Container](../../_static/images/user-guide/core-concepts/workspaces/customize-container-image.png)
 
 In many cases, you may want to use the same container image as a task execution
 that you want to debug. You can find the container image URI by going to the
 task execution details page:
 
-![Task Execution](/_static/images/user-guide/core-concepts/workspaces/customize-container-image-get-uri.png)
+![Task Execution](../../_static/images/user-guide/core-concepts/workspaces/customize-container-image-get-uri.png)
 
 {{< variant byoc >}}
 {{< markdown >}}
@@ -450,14 +450,14 @@ authenticate via the browser.
 You can filter workspaces to only the active ones by clicking on the **Active**
 toggle on the top left of the workspaces list view.
 
-![Active Workspaces](/_static/images/user-guide/core-concepts/workspaces/active-workspaces.png)
+![Active Workspaces](../../_static/images/user-guide/core-concepts/workspaces/active-workspaces.png)
 
 Sort by recently updated by clicking on the **Recently updated** toggle on the
 top right of the workspaces list view, and you can also sort by recently
 updated by clicking on the **Recently updated** toggle on the top right of the
 workspaces list view.
 
-![Filtering and Sorting Workspaces](/_static/images/user-guide/core-concepts/workspaces/filtering-sorting-workspaces.png)
+![Filtering and Sorting Workspaces](../../_static/images/user-guide/core-concepts/workspaces/filtering-sorting-workspaces.png)
 
 ## Troubleshooting
 
@@ -472,9 +472,9 @@ Under the hood, workspaces are powered by {{< key product_name >}} tasks, so to 
 of issues, the workspace detail page provides a link to the underlying
 task that's hosting the VSCode IDE:
 
-![Workspace Detail](/_static/images/user-guide/core-concepts/workspaces/failed-workspace-detail.png)
+![Workspace Detail](../../_static/images/user-guide/core-concepts/workspaces/failed-workspace-detail.png)
 
 Clicking on the link will open the task details page, where you can see the
 underlying task definition, pod events, and logs to debug further.
 
-![Task Detail](/_static/images/user-guide/core-concepts/workspaces/failed-task-detail.png)
+![Task Detail](../../_static/images/user-guide/core-concepts/workspaces/failed-task-detail.png)

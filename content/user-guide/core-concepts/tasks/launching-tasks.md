@@ -10,7 +10,7 @@ From the [task view](./viewing-tasks#task-view) (accessed, for example, by selec
 
 This opens the **New Execution** dialog for tasks:
 
-![](/_static/images/user-guide/core-concepts/tasks/launching-tasks/new-execution-dialog.png)
+![](../../../_static/images/user-guide/core-concepts/tasks/launching-tasks/new-execution-dialog.png)
 
 The settings are similar to those for workflows. At the top you can select:
 

@@ -10,7 +10,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Select **Launch Plans** in the sidebar to display a list of all the registered launch plans in the project and domain:
 
-![Launch plans list](/_static/images/user-guide/core-concepts/launch-plans/viewing-launch-plans/launch-plans-list.png)
+![Launch plans list](../../../_static/images/user-guide/core-concepts/launch-plans/viewing-launch-plans/launch-plans-list.png)
 
 You can search the launch plans by name and filter for only those that are archived.
 
@@ -25,7 +25,7 @@ The columns in the launch plans table are defined as follows:
 
 Select an entry on the list to go to that specific launch plan:
 
-![Launch plan view](/_static/images/user-guide/core-concepts/launch-plans/viewing-launch-plans/launch-plan-view.png)
+![Launch plan view](../../../_static/images/user-guide/core-concepts/launch-plans/viewing-launch-plans/launch-plan-view.png)
 
 Here you can see:
 * **Launch Plan Detail (Latest Version)**:

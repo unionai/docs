@@ -15,7 +15,7 @@ In this section we explain how to set up and use AWS Elastic Container Registry 
 
 If you are using ECR in the same AWS account as your {{< key product_name >}} data plane, then you do not need to configure anything. Access to ECR in the same account is enabled by default.
 
-If you want to store your task container images in an ECR instance in an AWS account _other than the one that holds your data plane_, then you will have to configure that ECR instance to permit access from your data plane. See [Enable AWS ECR](../../../integrations/enabling-aws-resources/enabling-aws-ecr) for details.
+If you want to store your task container images in an ECR instance in an AWS account _other than the one that holds your data plane_, then you will have to configure that ECR instance to permit access from your data plane. See [Enable AWS ECR](../../../../deployment/enabling-aws-resources/enabling-aws-ecr) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -49,7 +49,7 @@ If you are in the same account as your {{< key product_name >}} data plane you s
 
 Under **Create a Repository**, click **Get Started**:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-1.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-1.png)
 
 On the **Create repository** page:
 
@@ -57,11 +57,11 @@ On the **Create repository** page:
 
 * Enter the name of the repository:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-2.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-2.png)
 
 and then scroll down to click **Create repository**:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-3.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-3.png)
 
 Your repository is now created.
 

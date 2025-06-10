@@ -9,7 +9,7 @@ mermaid: true
 
 The illustration below shows the timeline view of a workflow execution.
 
-![Flyte workflow timeline](/_static/images/architecture/workflow-timeline/flyte-workflow-timeline.svg)
+![Flyte workflow timeline](../_static/images/architecture/workflow-timeline/flyte-workflow-timeline.svg)
 
 This illustration refers to a simple workflow, with 2 nodes `N1` an `N2`. This can be represented as follows:
 

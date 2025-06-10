@@ -1,9 +1,9 @@
-name: Check Jupyter Notebooks
+name: Check Images Health
 
 on: [push]
 
 jobs:
-  check-jupyter:
+  check-images:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,10 +13,10 @@ jobs:
           submodules: 'true'
           fetch-depth: 0  # Fetch all history for proper git operations
 
-      - name: Run Jupyter notebook validation
-        run: make check-jupyter
+      - name: Run image validation
+        run: make check-images
 
       - name: Report status
         if: ${{ failure() }}
         run: |
-          echo "::error::Jupyter notebook validation failed. Please ensure all notebooks are properly synced and content hashes are up-to-date."
+          echo "::error::Image validation failed. Please ensure all images are properly referenced and they exist in this repository."

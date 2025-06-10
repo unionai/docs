@@ -116,7 +116,7 @@ You can then choose whether to enable **global access** or **project-domain-scop
   * Also, attach the policy called `userflyterole` to `<CustomRole>` (this will ensure that `<CustomRole>` has all the default permissions needed to allow tasks to run).
   * Attach `<CustomRole>` to the desired project-domain namespace.
 
-![](/_static/images/user-guide/integrations/enabling-aws-resources/union-roles.png)
+![](../../_static/images/user-guide/integrations/enabling-aws-resources/union-roles.png)
 
 ### Creating a custom policy
 

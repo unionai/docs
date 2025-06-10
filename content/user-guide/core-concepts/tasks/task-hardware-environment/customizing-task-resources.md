@@ -85,11 +85,11 @@ See [Accelerators](./accelerators) for more information.
 The execution defaults and resource quotas can be found on the right sidebar of the Dashboard.
 They can be edited by selecting the gear icon:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources/execution-defaults-gear.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources/execution-defaults-gear.png)
 
 This will open a dialog:
 
-![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources/execution-defaults-dialog.png)
+![](../../../../_static/images/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources/execution-defaults-dialog.png)
 
 > [!NOTE]
 > An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed.

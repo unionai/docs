@@ -17,16 +17,16 @@ and a corresponding {{< key product_name >}} project to which you will deploy th
 
 Create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
 
-![Select all projects](/_static/images/user-guide/getting-started/first-project/select-all-projects.png)
+![Select all projects](../../_static/images/user-guide/getting-started/first-project/select-all-projects.png)
 
 This will take you to the **Projects list**:
 
-![Projects list](/_static/images/user-guide/getting-started/first-project/projects-list.png)
+![Projects list](../../_static/images/user-guide/getting-started/first-project/projects-list.png)
 
 Click on the **New Project** button and fill in the details for your new project.
 For this example, let's create a project called **My project**:
 
-![Create new project](/_static/images/user-guide/getting-started/first-project/create-new-project.png "small")
+![Create new project](../../_static/images/user-guide/getting-started/first-project/create-new-project.png "small")
 
 You now have a project on {{< key product_name >}} named "My Project" (and with project ID `my-project`) into which you can register your workflows.
 
@@ -52,9 +52,7 @@ $ flytectl create project \
       --name "My project"
 ```
 
-You can see the project you just created by going to `http://localhost:30080` in your browser:
-
-![Welcome to Flyte](/_static/images/user-guide/getting-started/first-project/welcome-to-flyte.png)
+You can see the project you just created by going to `http://localhost:30080` in your browser.
 
 > [!NOTE] Default project
 > Flyte provides a default project (called `{{< key default_project >}}`) where all your workflows will be
@@ -87,4 +85,4 @@ The resulting directory will look like this:
 > {{< key product_name >}} project ID, as we have done here.
 
 Next, let's look at the contents of the local project directory.
-Continue to [Understanding the code](understanding-the-code).
+Continue to [Understanding the code](./understanding-the-code).

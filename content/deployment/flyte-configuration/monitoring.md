@@ -19,7 +19,7 @@ These metrics help users diagnose whether an issue is inherent to the platform o
 
 At a high level, workflow execution goes through the following discrete steps:
 
-![](/_static/images/deployment/flyte_wf_timeline.svg)
+![](../../_static/images/deployment/flyte_wf_timeline.svg)
 
 
 1. **Acceptance**: Measures the time consumed from receiving a service call to creating an Execution (Unknown) and moving to QUEUED.
