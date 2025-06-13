@@ -19,13 +19,18 @@ Open browser @ http://localhost:${port}
 EOF
 fi
 
+if ! command -v caddy 1>/dev/null; then
+  cat <<EOF
+---------------------------------------
+FATAL: 'caddy' web server required.
 
-if command -v caddy 1>/dev/null; then
-  echo "Using Caddy HTTP server"
-  caddy run --config scripts/Caddyfile --watch
-else
-  echo "Using Python HTTP server"
-  cd dist
-  python3 -m http.server ${PORT}
-  cd ..
+Install with:
+  MacOS  : brew install caddy
+  Ubuntu : apt  install caddy
+---------------------------------------
+
+EOF
+  exit 1
 fi
+
+caddy run --config scripts/Caddyfile --watch
