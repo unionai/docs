@@ -324,6 +324,7 @@ The following secret managers are available at the time of writing:
 
 - [K8s secrets](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret) (**default**): `flyte-pod-webhook` will try to look for a K8s secret named after the secret Group and retrieve the value for the secret Key.
 - [AWS Secret Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html): `flyte-pod-webhook` will add the AWS Secret Manager sidecar container to a task Pod which will mount the secret.
+- [GCP Secret Manager](https://cloud.google.com/security/products/secret-manager): `flyte-pod-webhook` will add the GCP Secret via a sidecar container to a task Pod which will mount the secret. See [gcp_secret_manager.go](https://github.com/flyteorg/flyte/blob/aaf6fecb36653e9b57d54fdcc5221731ba82cff5/flytepropeller/pkg/webhook/gcp_secret_manager.go#L40) for more details.
 - [Vault Agent Injector](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-first-secret#write-a-secret) : `flyte-pod-webhook` will annotate the task Pod with the respective Vault annotations that trigger an existing Vault Agent Injector to retrieve the specified secret Key from a vault path defined as secret Group.
 
 
@@ -333,10 +334,44 @@ so if you need to make larger files available to the task, then this might be th
 
 Furthermore, this method also allows you to have separate credentials for different domains but still using the same name for the secret.
 
+### Helm Chart Config
+
+[`secretManagerType`](https://github.com/flyteorg/flyte/blob/aaf6fecb36653e9b57d54fdcc5221731ba82cff5/flytepropeller/pkg/webhook/config/config.go#L64) in the is relevant config to select the secret manager you would like to use. Here is an example GCP configuration.
+
+```yaml
+configmap:
+  core:
+    webhook:
+      secretManagerType: 3 # 1=k8s, 2=AWS, 3=GCP, 4=Vault
+```
+
 ### AWS secrets manager
 
 When using the AWS secret management plugin, secrets need to be specified by naming them in the format
 `<SECRET_GROUP>:<SECRET_KEY>`, where the secret string is a plain-text value, **not** key/value json.
+
+### GCP secrets manager
+
+The GCP secret manager only supports mounting via FILE as shown below.
+
+```python
+import flytekit as fl
+
+SECRET_GROUP = "example-secret"
+SECRET_GROUP_VERSION = "1"
+SECRET_REQUEST = Secret(
+            group=SECRET_GROUP,
+            group_version=SECRET_GROUP_VERSION,
+            mount_requirement=fl.Secret.MountType.FILE
+        )
+
+@fl.task(secret_requests=[SECRET_REQUEST])
+def my_secret_task():
+    secret_val = fl.current_context().secrets.get(
+        SECRET_GROUP,
+        group_version=SECRET_GROUP_VERSION
+    )
+```
 
 ### Vault secrets manager
 
