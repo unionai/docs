@@ -103,3 +103,9 @@ Various links to test navigation.
 Various links to test navigation.
 {{< /link-card >}}
 {{< /grid >}}
+
+## Code
+
+Code examples are integrated into the main documentation:
+
+[Community > Contributing Docs > Shortcodes > Code](../../community/contributing-docs/shortcodes#-code-)

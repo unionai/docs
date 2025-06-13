@@ -236,52 +236,46 @@ Parameters:
 - `from`: The line number to start including from.
 - `to`: The line number to stop including at.
 - `lang`: The language of the code snippet.
+- `show_fragments`: Whether to show the fragment names in the code block.
+- `highlight`: Whether to highlight the code snippet.
 
-#### Including a section of a file: `{{</* docs-fragment */>}}`
+The examples in this section uses this file as base:
 
-```python
-def main():
-    """
-    A sample function
-    """
-    return 42
+{{< code file="/_static/__docs_builder__/sample.py" show_fragments=true lang=python >}}
+Link to [/_static/__docs_builder__/sample.py](/_static/__docs_builder__/sample.py)
 
-# {{docs-fragment entrypoint}}
-if __name__ == "__main__":
-    main()
-# {{/docs-fragment}}
-```
-
-Example:
+#### Including a section of a file: `{{docs-fragment}}`
 
 ```markdown
-{{</* code file="/_static/__docs_builder__/sample.py" fragment="entrypoint" */>}}
+{{</* code file="/_static/__docs_builder__/sample.py" fragment=entrypoint lang=python */>}}
 ```
-Link to [/_static/__docs_builder__/sample.py](/_static/__docs_builder__/sample.py)
 
 Effect:
 
-{{< code file="/_static/__docs_builder__/sample.py" fragment="entrypoint" >}}
+{{< code file="/_static/__docs_builder__/sample.py" fragment=entrypoint lang=python >}}
 
 #### Including a file with a specific line range: `from` and `to`
 
 ```markdown
-{{</* code file="/_static/public/public-key.txt" from="1" to="3" */>}}
+{{</* code file="/_static/__docs_builder__/sample.py" from=2 to=4 lang=python */>}}
 ```
-Link to [/_static/public/public-key.txt](/_static/public/public-key.txt)
 
 Effect:
 
-{{< code file="/_static/public/public-key.txt" from="1" to="3" >}}
+{{< code file="/_static/__docs_builder__/sample.py" from=2 to=4 lang=python >}}
 
 #### Including a whole file
 
 Simply specify no filters, just the `file` attribute:
 
-    {{</* code file="/_static/public/public-key.txt" */>}}
+```markdown
+{{</* code file="/_static/__docs_builder__/sample.py" */>}}
+```
 
-Link to [/_static/public/public-key.txt](/_static/public/public-key.txt)
+> [!NOTE]
+> Note that without `show_fragments=true` the fragment markers will not be shown.
 
 Effect:
 
-{{< code file="/_static/public/public-key.txt" >}}
+{{< code file="/_static/__docs_builder__/sample.py" >}}
+

@@ -5,11 +5,13 @@
 {{- /* - from: The starting line number of the code block. */ -}}
 {{- /* - to: The ending line number of the code block. */ -}}
 {{- /* - fragment: The fragment identifier to extract code between markers. */ -}}
+{{- /* - show_fragments: Whether to show fragments in the code block. */ -}}
 {{- /* Example usage: */ -}}
 {{- /*     {{< code file="path/to/file" lang="html" from="1" to="5" fragment="my-fragment" >}} */ -}}
 
 {{- $fileName := .Get "file" -}}
 {{- $fragment := .Get "fragment" -}}
+{{- $showFragments := .Params.show_fragments -}}
 
 {{- /* Define allowed prefixes */ -}}
 {{- $allowedPrefixes := slice "/static/" "/assets/" "/_static/" "/external/" -}}
@@ -73,11 +75,8 @@
 {{/* Prepare content with line numbers and highlighting */}}
 {{- $content := "" -}}
 {{- range $index, $line := $filteredLines -}}
-  {{- $lineNum := 0 -}}
-  {{- if $lineStart -}}
-    {{- $lineNum = add $index (int $lineStart) -}}
-  {{- else -}}
-    {{- $lineNum = add $index 1 -}}
+  {{- if and (in $line "docs-fragment") (not $showFragments) -}}
+    {{- continue -}}
   {{- end -}}
   {{- $content = print $content $line "\n" -}}
 {{- end -}}
