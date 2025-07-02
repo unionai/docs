@@ -42,6 +42,7 @@ custom_js = [
   "sidebar.js",
   "theme.js",
   "tags.js",
+  "copy-handler.js",
 ]
 
 [params.variant_weights]
