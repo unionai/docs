@@ -31,8 +31,9 @@ integrating with existing systems within your organization.
 Event egress can be configured to work with **AWS** using
 [SQS](https://aws.amazon.com/sqs/) and
 [SNS](https://aws.amazon.com/sns/),
-[GCP Pub/Sub](https://cloud.google.com/pubsub), or
-[Apache Kafka](https://kafka.apache.org/)
+[GCP Pub/Sub](https://cloud.google.com/pubsub)
+[Apache Kafka](https://kafka.apache.org/), or
+[NATS](https://https://nats.io/)
 
 ## Configuration
 
@@ -91,6 +92,26 @@ cloud_events.yaml: |
       topicName: myTopic
     type: kafka
 ```
+{{< /markdown >}}
+{{< /dropdown >}}
+
+
+{{< dropdown title="NATS" icon=arrow_forward >}}
+{{< markdown >}}
+
+```yaml
+cloud_events.yaml: |
+  cloudEvents:
+    enable: true
+    nats:
+      servers: 127.0.0.1:4222
+    eventsPublisher:
+      eventTypes:
+      - all
+      topicName: myTopic # this will be used as NATS subject
+    type: nats
+```
+
 {{< /markdown >}}
 {{< /dropdown >}}
 
