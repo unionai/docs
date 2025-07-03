@@ -1,7 +1,7 @@
 ---
 title: Authentication
 weight: 1
-variants: +flyte -serverless +byoc +selfmanaged
+variants: -flyte -serverless +byoc +selfmanaged
 ---
 
 # Authentication
@@ -79,35 +79,11 @@ Steps to Set Up ClientSecret Authentication:
     ```
     The output provides a Client ID and API Key. Store the API Key securely, as it will not be shown again.
 
-2. Configure ClientSecret Authentication:
-    - **Using a local file**:
-        ```
-        admin:
-          endpoint: dns:///<YourOrg>.hosted.unionai.cloud
-          insecure: false
-          authType: ClientSecret
-          clientId: <YourClientId>
-          clientSecretLocation: /path/to/secret.txt
-        logger:
-          show-source: true
-          level: 0
-        ```
-    - **Using an environment variable**:
-        ```
-        admin:
-          endpoint: dns:///<YourOrg>.hosted.unionai.cloud
-          insecure: false
-          authType: ClientSecret
-          clientId: <YourClientId>
-          clientSecretEnvVar: {{< key env_prefix >}}_API_KEY
-        logger:
-          show-source: true
-          level: 0
-        ```
-3. Set the Environment Variable (if using env-based authentication):
+2. Set the Environment Variable:
     ```
     export {{< key env_prefix >}}_API_KEY="<SECRET>"
     ```
+   With this environment variable set, `{{< key cli >}}` and `uctl` commands do not require a configuration yaml to be referenced.
 
 > [!NOTE]
 > Never commit API keys to version control. Use environment variables or a secure vault.
