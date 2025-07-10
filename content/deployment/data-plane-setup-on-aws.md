@@ -417,12 +417,12 @@ You will use this policy in a later step.
             "servicequotas:GetServiceQuota",
             "cloudwatch:GetMetricStatistics"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"VisualEditor12"
       },
       {
-         "Action":"dynamodb:_",
+         "Action":"dynamodb:*",
          "Resource":[
             "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountID}:table/opta-*"
          ],
@@ -430,12 +430,12 @@ You will use this policy in a later step.
          "Sid":"VisualEditor13"
       },
       {
-         "Action":"s3:_",
+         "Action":"s3:*",
          "Resource":[
-            "arn:aws:s3:::opta-_",
-            "arn:aws:s3:::opta-_/",
-            "arn:aws:s3:::union-_",
-            "arn:aws:s3:::union-_/"
+            "arn:aws:s3:::opta-*",
+            "arn:aws:s3:::opta-*/",
+            "arn:aws:s3:::union-*",
+            "arn:aws:s3:::union-*/"
          ],
          "Effect":"Allow",
          "Sid":"VisualEditor14"
@@ -448,7 +448,7 @@ You will use this policy in a later step.
             "events:UntagResource"
          ],
          "Resource":[
-            "arn:aws:events:${AWS::Region}:${AWS::AccountID}:rule/Karpenter_"
+            "arn:aws:events:${AWS::Region}:${AWS::AccountID}:rule/Karpenter*"
          ],
          "Effect":"Allow"
       },
@@ -510,7 +510,7 @@ You will use this policy in a later step.
             "ec2:DeleteLaunchTemplateVersions",
             "ec2:ModifyLaunchTemplate"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"self1"
       },
@@ -527,7 +527,7 @@ You will use this policy in a later step.
             "autoscaling:DescribeTags",
             "autoscaling:DeleteTags"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"self2"
       },
@@ -589,7 +589,7 @@ You will use this policy in a later step.
             "ec2:DescribeVpcEndpoints",
             "ec2:DescribePrefixLists"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"AllowVpcEndpointReadPermissions"
       },
@@ -615,7 +615,7 @@ You will use this policy in a later step.
             "ecr:DescribeImages"
          ],
          "Resource":[
-            "arn:aws:ecr:_:${AWS::AccountID}:repository/union/_"
+            "arn:aws:ecr:*:${AWS::AccountID}:repository/union/*"
          ],
          "Effect":"Allow",
          "Sid":"UnionImageBuilderRepoAdmin"
@@ -624,7 +624,7 @@ You will use this policy in a later step.
          "Action":[
             "ecr:GetAuthorizationToken"
          ],
-         "Resource":"_",
+         "Resource":"*",
          "Effect":"Allow",
          "Sid":"UnionAdminAuthToken"
       }
