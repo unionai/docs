@@ -7,10 +7,10 @@ variants: -flyte -serverless +byoc -selfmanaged
 # Data plane setup on AWS
 
 To set up your data plane on Amazon Web Services (AWS) you must allow {{< key product_name >}} to provision and maintain compute resources under your AWS account.
-You will need to set up an IAM role for {{< key product_name >}} to use that has sufficient permissions to do this provisioning.
+You will need to set up an IAM role for {{< key product_name >}} to use that has sufficient permissions to do this provisioning. 
 Setting the permissions can be done either through CloudFormation or the AWS console.
 
-Additionally, if you wish to manage your own Virtual Private Cloud (VPC) then you will need to set up the VPC according to the guidelines described below.
+If you wish to manage your own Virtual Private Cloud (VPC) then you will need to set up the VPC according to the guidelines described below.
 If you do not wish to manage your own VPC then no additional configuration is needed.
 
 ## Setting permissions through CloudFormation
@@ -710,3 +710,231 @@ Once your VPC is set up, you will need to provide the {{< key product_name >}} t
   - Example: `subnet-d7d3ce57d1a546401`
 - **Private subnet IDs** (one per availability zone)
   - Example: `subnet-bc2eafd5c11180be0`
+
+## Private EKS endpoint
+
+To deploy the Union operator in your EKS cluster and to perform troubleshooting at the Kubernetes layer, Union  requires access to the [EKS endpoint](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html). 
+
+> This connection is not used for executions, only for cluster onboarding, upgrades and support.
+
+The requirements described so far, enable Union to operate with a `Public` or `Public and Private` EKS endpoint. 
+
+For endpoints configured as `Private` only, Union implements a VPC Endpoint connection over Private Link, using a "jumper" ECS container behind a Network Load Balancer to forward incoming connections to the EKS API endpoint. This is needed to handle the dynamic nature of the EKS Endpoint allocated IP address.
+
+![](../_static/images/deployment/data-plane-setup-on-aws/aws_private_link_architecture.png)
+
+For this setup, there are additional requirements you'll need to complete in your AWS account:
+
+### Create additional roles for ECS
+
+#### ECS Task Execution role
+- **Role name**: `unionai-access-<REGION>-ecs-execution-role` 
+- **Attached policy**: `AmazonECSTaskExecutionRolePolicy` (built-in policy)
+- **Trust Relationship**:
+```json
+ {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
+
+#### ECS Task Definition role
+- **Role name**: `unionai-access-<REGION>-ecs-task-role`  
+- **Attached policy**: None 
+- **Trust Relationship**:
+```json
+ {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
+### Extend the base IAM policy
+
+Add the following permissions to the IAM policy described in the [Prepare the policy document](#prepare-the-policy-documents) section , replacing `REGION` and `ACCOUNT_ID` to match your environment:
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "Statement2",
+			"Effect": "Allow",
+			"Action": [
+				"iam:GetRole"
+			],
+			"Resource": [
+				"arn:aws:iam::<ACCOUNT_ID>:role/unionai-access-*-ecs-execution-role",
+				"arn:aws:iam::<ACCOUNT_ID>:role/unionai-access-*-ecs-task-role"
+			]
+		},
+		{
+			"Sid": "GlobalDescribePermissions",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:DescribeVpcs",
+				"ec2:DescribeVpcAttribute",
+				"ec2:DescribeSecurityGroups",
+				"ec2:DescribeSubnets",
+				"ec2:DescribeNetworkInterfaces",
+				"elasticloadbalancing:DescribeLoadBalancers",
+				"elasticloadbalancing:DescribeTargetGroups",
+				"elasticloadbalancing:DescribeTargetGroupAttributes",
+				"elasticloadbalancing:DescribeTags",
+				"elasticloadbalancing:DescribeLoadBalancerAttributes",
+				"elasticloadbalancing:DescribeListeners",
+				"ec2:DescribeVpcEndpointServiceConfigurations",
+				"logs:DescribeLogGroups",
+				"ecs:DescribeTaskDefinition",
+				"ecs:DeregisterTaskDefinition"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "EC2ResourceSpecificDesc",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:DescribeVpcEndpointConnections"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "EC2ResourceSpecific",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:ModifyVpcEndpointServiceConfiguration",
+				"ec2:CreateVpcEndpointServiceConfiguration",
+				"ec2:DeleteVpcEndpointServiceConfigurations",
+				"ec2:DescribeVpcEndpointServicePermissions",
+				"ec2:ModifyVpcEndpointServicePermissions",
+				"ec2:StartVpcEndpointServicePrivateDnsVerification",
+				"ec2:ModifyVpcEndpointServiceConfiguration",
+				"ec2:AcceptVpcEndpointConnections",
+				"ec2:RejectVpcEndpointConnections",
+				"ec2:CreateTags"
+			],
+			"Resource": "arn:aws:ec2:<REGION>:<ACCOUNT_ID>:vpc-endpoint-service/*"
+		},
+		{
+			"Sid": "EC2SecurityGroups",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:CreateSecurityGroup",
+				"ec2:AuthorizeSecurityGroupIngress",
+				"ec2:AuthorizeSecurityGroupEgress",
+				"ec2:RevokeSecurityGroupEgress",
+				"ec2:CreateTags",
+				"ec2:DeleteSecurityGroup"
+			],
+			"Resource": [
+				"arn:aws:ec2:<REGION>:<ACCOUNT_ID>:security-group/*",
+				"arn:aws:ec2:<REGION>:<ACCOUNT_ID>:vpc/*"
+			]
+		},
+		{
+			"Sid": "VisualEditor1",
+			"Effect": "Allow",
+			"Action": "eks:DescribeCluster",
+			"Resource": "arn:aws:eks:<REGION>:<ACCOUNT_ID>:cluster/*"
+		},
+		{
+			"Sid": "Statement3",
+			"Effect": "Allow",
+			"Action": [
+				"acm:RequestCertificate",
+				"acm:AddTagsToCertificate",
+				"acm:DescribeCertificate",
+				"acm:ListTagsForCertificate",
+				"acm:DeleteCertificate"
+			],
+			"Resource": "arn:aws:acm:<REGION>:<ACCOUNT_ID>:certificate/*"
+		},
+		{
+			"Sid": "Statement4",
+			"Effect": "Allow",
+			"Action": [
+				"logs:CreateLogGroup",
+				"logs:DeleteLogGroup",
+				"logs:TagResource",
+				"logs:PutRetentionPolicy",
+				"logs:DescribeLogGroups",
+				"logs:ListTagsForResource",
+				"logs:GetLogEvents",
+				"logs:FilterLogEvents"
+			],
+			"Resource": [
+				"arn:aws:logs:<REGION>:<ACCOUNT_ID>:log-group:/ecs/unionai/proxy-*",
+				"arn:aws:logs:<REGION>:<ACCOUNT_ID>:log-group::log-stream"
+			]
+		},
+		{
+			"Sid": "Statement5",
+			"Effect": "Allow",
+			"Action": [
+				"elasticloadbalancing:DescribeTargetGroups",
+				"elasticloadbalancing:ModifyTargetGroupAttributes",
+				"elasticloadbalancing:DescribeTargetGroupAttributes",
+				"elasticloadbalancing:DescribeTags",
+				"elasticloadbalancing:DeleteTargetGroup",
+				"elasticloadbalancing:CreateTargetGroup",
+				"elasticloadbalancing:DescribeLoadBalancers",
+				"elasticloadbalancing:CreateLoadBalancer",
+				"elasticloadbalancing:DescribeLoadBalancerAttributes",
+				"elasticloadbalancing:ModifyLoadBalancerAttributes",
+				"elasticloadbalancing:DeleteLoadBalancer",
+				"elasticloadbalancing:CreateListener",
+				"elasticloadbalancing:DescribeListeners",
+				"elasticloadbalancing:DeleteListener",
+				"elasticloadbalancing:AddTags",
+				"elasticloadbalancing:ModifyTargetGroup"
+			],
+			"Resource": [
+				"arn:aws:elasticloadbalancing:<REGION>:<ACCOUNT_ID>:loadbalancer/net/unionai-access-*/*",
+				"arn:aws:elasticloadbalancing:<REGION>:<ACCOUNT_ID>:targetgroup/unionai-access-*/*",
+				"arn:aws:elasticloadbalancing:<REGION>:<ACCOUNT_ID>:listener/net/unionai-access-*/*"
+			]
+		},
+		{
+			"Sid": "Statement6",
+			"Effect": "Allow",
+			"Action": [
+				"ecs:CreateCluster",
+				"ecs:TagResource",
+				"ecs:RegisterTaskDefinition",
+				"ecs:DescribeClusters",
+				"ecs:ListClusters",
+				"ecs:ListTaskDefinitions",
+				"ecs:ListServices",
+				"ecs:DeleteCluster",
+				"ecs:DescribeTaskDefinition",
+				"ecs:CreateService",
+				"ecs:DescribeServices",
+				"ecs:UpdateService",
+				"ecs:DeleteService"
+			],
+			"Resource": [
+				"arn:aws:ecs:<REGION>:<ACCOUNT_ID>:cluster/unionai-access-*",
+				"arn:aws:ecs:<REGION>:<ACCOUNT_ID>:task-definition/unionai-access-*:*",
+				"arn:aws:ecs:<REGION>:<ACCOUNT_ID>:service/unionai-access-*/proxy-*"
+			]
+		}
+	]
+}
+```
+Share the ARN of the two roles with the {{< key product_name >}} team.
+The {{< key product_name >}} team will get back to you to verify that they are able to assume the role.
