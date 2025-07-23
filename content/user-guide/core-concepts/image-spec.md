@@ -70,6 +70,16 @@ sklearn_image_spec = ImageSpec(
 )
 ```
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+> [!WARNING]
+> Images built with ImageSpec do **not** include CA certificates by default, which can break TLS validation and block access to remote storage when Polars uses its native Rust-based networking (e.g., when using `polars.scan_parquet()`).
+> **Solution:** Add `"ca-certificates"` to `apt_packages` in your `ImageSpec`.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Install Conda packages
 
 Define the `ImageSpec` to install packages from a specific conda channel.
