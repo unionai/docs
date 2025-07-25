@@ -24,69 +24,29 @@ In a local directory, create the following files:
 
 ## App configuration
 
-First, we declare the resources, runtime image, and the Scikit-learn model required
-by the FastAPI app.
+In the code below, we declare the resources, runtime image, and FastAPI app that
+exposes a `/predict` endpoint.
 
 ```python
 """A {{< key product_name >}} app that uses FastAPI to serve model created by a {{< key product_name >}} workflow."""
 
 import os
 import {{< key kit_import >}}
+import joblib
+from fastapi import FastAPI
 
 SklearnModel = union.Artifact(name="sklearn-model")
 
-# The `ImageSpec` for the container that will run the `App`.
-# `union-runtime` must be declared as a dependency,
-# in addition to any other dependencies needed by the app code.
-# Set the environment variable `REGISTRY` to be the URI for your container registry.
-# If you are using `ghcr.io` as your registry, make sure the image is public.
+# The `ImageSpec` for the container that will run the `App`, where `union-runtime`
+# must be declared as a dependency. In addition to any other dependencies needed
+# by the app code. Set the environment variable `REGISTRY` to be the URI for your
+# container registry. If you are using `ghcr.io` as your registry, make sure the
+# image is public.
 image_spec = union.ImageSpec(
     name="union-serve-sklearn-fastapi",
-    packages=["union-runtime>=0.1.10", "scikit-learn==1.5.2", "fastapi[standard]"],
+    packages=["union-runtime>=0.1.10", "scikit-learn==1.5.2", "joblib==1.5.1", "fastapi[standard]"],
     registry=os.getenv("REGISTRY"),
 )
-
-# The `App` declaration.
-# Uses the `ImageSpec` declared above.
-# Your core logic of the app resides in the files declared
-# in the `include` parameter, in this case, `main.py`.
-# Input artifacts are declared in the `inputs` parameter
-fast_api_app = union.app.App(
-    name="simple-fastapi-sklearn",
-    inputs=[
-        union.app.Input(
-            value=SklearnModel.query(),
-            download=True,
-            env_var="SKLEARN_MODEL",
-        )
-    ],
-    container_image=image_spec,
-    limits=union.Resources(cpu="1", mem="1Gi"),
-    port=8082,
-    include=["main.py"],
-    args="fastapi dev --port 8082",
-)
-```
-
-
-Note that the Artifact is provided as an `Input` to the App definition. With `download=True`,
-the model is downloaded to the container's working directory. The full local path to the
-model is set to `SKLEARN_MODEL` by the runtime.
-
-## FastAPI App
-
-During startup, the FastAPI app loads the model using the `SKLEARN_MODEL` environment
-variable. Then it serves an endpoint
-
-```python
-"""Set up the FastAPI app."""
-
-from contextlib import asynccontextmanager
-import os
-
-import joblib
-from fastapi import FastAPI
-import union_runtime
 
 ml_models = {}
 
@@ -98,11 +58,40 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+# The `App` declaration, which uses the `ImageSpec` declared above.
+# Your core logic of the app resides in the files declared in the `include`
+# parameter, in this case, `main.py`. Input artifacts are declared in the
+# `inputs` parameter
+fast_api_app = union.app.App(
+    name="simple-fastapi-sklearn",
+    inputs=[
+        union.app.Input(
+            value=SklearnModel.query(),
+            download=True,
+            env_var="SKLEARN_MODEL",
+        )
+    ],
+    container_image=image_spec,
+    framework_app=app,
+    limits=union.Resources(cpu="1", mem="1Gi"),
+    port=8082,
+)
+
 @app.get("/predict")
 async def predict(x: float, y: float) -> float:
     result = ml_models["model"]([[x, y]])
     return {"result": result}
+
 ```
+
+Note that the Artifact is provided as an `Input` to the App definition. With `download=True`,
+the model is downloaded to the container's working directory. The full local path to the
+model is set to `SKLEARN_MODEL` by the runtime.
+
+During startup, the FastAPI app loads the model using the `SKLEARN_MODEL` environment
+variable. Then it serves an endpoint at `/predict` that takes two float inputs and
+returns a float result.
+
 
 ## Training workflow
 

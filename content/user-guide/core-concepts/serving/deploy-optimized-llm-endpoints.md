@@ -1,6 +1,6 @@
 ---
 title: Deploy Optimized LLM Endpoints with vLLM and SGLang
-weight: 4
+weight: 5
 variants: -flyte +serverless +byoc +selfmanaged
 ---
 
@@ -18,8 +18,8 @@ see the [Cache a HuggingFace Model as an Artifact](cache-huggingface-model.md) g
 
 Union provides two specialized app classes for serving high-performance LLM endpoints:
 
-- **[`SGLangApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmsglangapp)**: Optimized for structured generation and complex reasoning tasks
-- **[`VLLMApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmvllmapp)**: High-performance inference engine with excellent throughput
+- **[`SGLangApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmsglangapp)**: uses [SGLang](https://docs.sglang.ai/), a fast serving framework for large language models and vision language models.
+- **[`VLLMApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmvllmapp)**: uses [vLLM](https://docs.vllm.ai/en/latest/), a fast and easy-to-use library for LLM inference and serving.
 
 By default, both classes provide:
 
@@ -47,9 +47,9 @@ from flytekit.extras.accelerators import L4
 # Reference the cached model artifact
 Model = union.Artifact(name="qwen2-5-0-5b-instruct")
 
-# Deploy with default optimized image
+# Deploy with default image
 vllm_app = VLLMApp(
-    name="basic-vllm-app",
+    name="vllm-app",
     requests=union.Resources(cpu="12", mem="24Gi", gpu="1"),
     accelerator=L4,
     model=Model.query(),  # Query the cached artifact
@@ -61,13 +61,25 @@ vllm_app = VLLMApp(
 )
 ```
 
+To use the optimized image, use the `OPTIMIZED_VLLM_IMAGE` variable:
+
+```python
+from union.app.llm import OPTIMIZED_VLLM_IMAGE
+
+vllm_app = VLLMApp(
+    name="vllm-app",
+    container_image=OPTIMIZED_VLLM_IMAGE,
+    ...
+)
+```
+
 Here we're using a single L4 GPU to serve the model and specifying `stream_model=True`
 to stream the model weights directly to GPU memory.
 
 Deploy the app:
 
 ```bash
-union deploy apps vllm_app.py basic-vllm-app
+union deploy apps vllm_app.py vllm-app
 ```
 
 ### Deploy with SGLang
@@ -82,9 +94,9 @@ from flytekit.extras.accelerators import L4
 # Reference the cached model artifact
 Model = union.Artifact(name="qwen2-5-0-5b-instruct")
 
-# Deploy with default optimized image
+# Deploy with default image
 sglang_app = SGLangApp(
-    name="basic-sglang-app",
+    name="sglang-app",
     requests=union.Resources(cpu="12", mem="24Gi", gpu="1"),
     accelerator=L4,
     model=Model.query(),  # Query the cached artifact
@@ -96,10 +108,22 @@ sglang_app = SGLangApp(
 )
 ```
 
+To use the optimized image, use the `OPTIMIZED_SGLANG_IMAGE` variable:
+
+```python
+from union.app.llm import OPTIMIZED_SGLANG_IMAGE
+
+sglang_app = SGLangApp(
+    name="sglang-app",
+    container_image=OPTIMIZED_SGLANG_IMAGE,
+    ...
+)
+```
+
 Deploy the app:
 
 ```bash
-union deploy apps sglang_app.py basic-sglang-app
+union deploy apps sglang_app.py sglang-app
 ```
 
 ## Custom Image Example: Deploy with Your Own Image
@@ -120,7 +144,7 @@ image = union.ImageSpec(
     name="vllm-serving-custom",
     builder="union",
     apt_packages=["build-essential"],
-    packages=["union[vllm]==0.1.187"],
+    packages=["union[vllm]>=0.1.189"],
     env={
         "NCCL_DEBUG": "INFO",
         "CUDA_LAUNCH_BLOCKING": "1",
@@ -153,7 +177,7 @@ image = union.ImageSpec(
     builder="union",
     python_version="3.12",
     apt_packages=["build-essential"],
-    packages=["union[sglang]==0.1.187"],
+    packages=["union[sglang]>=0.1.189"],
 )
 
 # Deploy with custom image
@@ -312,6 +336,55 @@ Then deploy the app:
 
 ```bash
 union deploy apps sglang_app_sharded.py sglang-app-sharded-optimized
+```
+
+## Authentication via API Key
+
+To secure your `SGLangApp`s and `VLLMApp`s with API key authentication, you can
+specify a secret in the `extra_args` parameter. First, create a secret:
+
+```bash
+union secrets create --name AUTH_SECRET
+```
+
+Add the secret value to the input field and save the secret.
+
+Then, add the secret to the `extra_args` parameter. For SGLang, do the following:
+
+```python
+from union import Secret
+
+sglang_app = SGLangApp(
+    name="sglang-app",
+    ...,
+    # Disable Union's platform-level authentication so you can access the
+    # endpoint in the public internet
+    requires_auth=False,
+    secrets=[Secret(key="AUTH_SECRET", env_var="AUTH_SECRET")],
+    extra_args=[
+        ...,
+        "--api-key", "$AUTH_SECRET",  # Use the secret in the extra_args
+    ],
+)
+```
+
+And similarly for vLLM, do the following:
+
+```python
+from union import Secret
+
+vllm_app = VLLMApp(
+    name="vllm-app",
+    ...,
+    # Disable Union's platform-level authentication so you can access the
+    # endpoint in the public internet
+    requires_auth=False,
+    secrets=[Secret(key="AUTH_SECRET", env_var="AUTH_SECRET")],
+    extra_args=[
+        ...,
+        "--api-key", "$AUTH_SECRET",  # Use the secret in the extra_args
+    ],
+)
 ```
 
 ## Performance Tuning

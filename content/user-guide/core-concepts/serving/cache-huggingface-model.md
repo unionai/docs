@@ -1,6 +1,6 @@
 ---
 title: Cache a Huggingface Model as an Artifact
-weight: 3
+weight: 4
 variants: -flyte +serverless +byoc +selfmanaged
 ---
 
